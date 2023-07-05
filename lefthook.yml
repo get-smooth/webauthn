@@ -1,0 +1,13 @@
+pre-push:
+  parallel: true
+  commands:
+    lint:
+      tags: quality
+      run: make lint
+    format:
+      tags: quality
+      run: make format
+    test:
+      run: make test
+    build:
+      run: make compile

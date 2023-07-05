@@ -1,0 +1,26 @@
+{
+  "name": "@0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn",
+  "description": "WIIIIIP - WebAuthn library in Solidity",
+  "version": "0.0.1",
+  "author": "0x90d2b2b7fb7599eebb6e7a32980857d8 https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8",
+  "repository": "github:@0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn",
+  "bugs": "https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/issues",
+  "homepage": "https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn#readme",
+  "engines": {
+    "node": ">= 18"
+  },
+  "devDependencies": {
+    "lefthook": "^1.4.1",
+    "prettier": "^2.8.7",
+    "solhint-community": "^3.5.0"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "forge",
+    "evm",
+    "foundry",
+    "smart-contracts",
+    "solidity"
+  ]
+}

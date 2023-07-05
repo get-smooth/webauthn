@@ -1,0 +1,60 @@
+name: Tests
+
+env:
+  API_KEY_ALCHEMY: ${{ secrets.API_KEY_ALCHEMY }}
+  API_KEY_ETHERSCAN: ${{ secrets.API_KEY_ETHERSCAN }}
+  API_KEY_INFURA: ${{ secrets.API_KEY_INFURA }}
+  FOUNDRY_PROFILE: "ci"
+  MNEMONIC: ${{ secrets.MNEMONIC }}
+
+# This CI workflow is responsible of running the tests.
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # TODO: Make this permission more granular
+    permissions: write-all
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Show the Foundry config
+        run: forge config
+
+      - name: Generate a fuzz seed that changes weekly to avoid burning through RPC allowance
+        run: >
+          echo "FOUNDRY_FUZZ_SEED=$(
+            echo $(($EPOCHSECONDS - $EPOCHSECONDS % 604800))
+          )" >> $GITHUB_ENV
+
+      # TODO: Rework the job to correctly print the output of the test command
+      - name: Run tests with gas reporting
+        run: forge test --gas-report > gasreport.ansi
+
+      - name: Compare gas reports
+        uses: Rubilmax/foundry-gas-diff@v3.14
+        with:
+          summaryQuantile: 0.8 # only display the 20% most significant gas diffs in the summary
+          sortCriteria: avg,max # sort diff rows by criteria
+          sortOrders: desc,asc # and directions
+        id: gas_diff
+
+      # Comment on the PR with the gas diff
+      - name: Add gas diff to sticky comment
+        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          # delete the comment in case changes no longer impact gas costs
+          delete: ${{ !steps.gas_diff.outputs.markdown }}
+          message: ${{ steps.gas_diff.outputs.markdown }}
