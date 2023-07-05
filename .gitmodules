@@ -6,3 +6,6 @@
   branch = "release-v0"
   path = "lib/prb-test"
   url = "https://github.com/PaulRBerg/prb-test"
+[submodule "lib/secp256r1-verify"]
+	path = lib/secp256r1-verify
+	url = https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify

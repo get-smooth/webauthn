@@ -19,7 +19,8 @@
   remappings = [
     "ds-test/=lib/forge-std/lib/ds-test/src/",
     "forge-std/=lib/forge-std/src/",
-    "prb-test/=lib/prb-test/src/"
+    "prb-test/=lib/prb-test/src/",
+    "secp256r1-verify=lib/secp256r1-verify/src/",
   ]
 
 [profile.ci]
