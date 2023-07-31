@@ -6,7 +6,6 @@ import { ECDSA256r1 } from "../lib/secp256r1-verify/src/ECDSA256r1.sol";
 
 error InvalidAuthenticatorData();
 error InvalidClientData();
-error InvalidSignature();
 
 library WebAuthn {
     function format(
@@ -26,7 +25,7 @@ library WebAuthn {
                 revert InvalidAuthenticatorData();
             }
             // Verify that clientData commits to the expected client challenge
-            string memory challengeEncoded = Base64.encode(abi.encodePacked(clientChallenge));
+            string memory challengeEncoded = Base64.encode(abi.encodePacked(clientChallenge), true, true);
             bytes memory challengeExtracted = new bytes(
                 bytes(challengeEncoded).length
             );
