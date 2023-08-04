@@ -6,10 +6,10 @@ import { WebAuthn } from "../src/WebAuthn.sol";
 
 contract LibraryWrapper {
     function verify(
-        bytes calldata authData,
-        bytes1 authDataFlagMask,
+        bytes1 authenticatorDataFlagMask,
+        bytes calldata authenticatorData,
         bytes calldata clientData,
-        bytes32 clientChallenge,
+        bytes calldata clientChallengeBase64,
         uint256 clientChallengeOffset,
         uint256 r,
         uint256 s,
@@ -20,7 +20,15 @@ contract LibraryWrapper {
         returns (bool)
     {
         return WebAuthn.verify(
-            authData, authDataFlagMask, clientData, clientChallenge, clientChallengeOffset, r, s, qx, qy
+            authenticatorDataFlagMask,
+            authenticatorData,
+            clientData,
+            clientChallengeBase64,
+            clientChallengeOffset,
+            r,
+            s,
+            qx,
+            qy
         );
     }
 }
@@ -56,13 +64,13 @@ contract MyScript is BaseScript {
 
     example:
         cast call 0x387ca8d38f379710a3d24d710ba2940787f7b4a1 \
-        "verify(bytes,bytes1,bytes,bytes32,uint256,uint256,uint256,uint256,uint256)(bool)" \
-        0xf8e4b678e1c62f7355266eaa4dc1148573440937063a46d848da1e25babbd20b010000004d \
+        "verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,uint256,uint256)(bool)" \
         0x01 \
+        0xf8e4b678e1c62f7355266eaa4dc1148573440937063a46d848da1e25babbd20b010000004d \
         0x7b2274797065223a22776562617574686e2e676574222c226368616c6c656e6765223a224e546f2d316\
 1424547526e78786a6d6b61544865687972444e5833697a6c7169316f776d4f643955474a30222c226f7269\
 67696e223a2268747470733a2f2f66726573682e6c65646765722e636f6d222c2263726f73734f726967696e223a66616c73657d\
-        0x353a3ed5a0441919f1c639a46931de872ac3357de2ce5aa2d68c2639df54189d \
+        4e546f2d3161424547526e78786a6d6b61544865687972444e5833697a6c7169316f776d4f643955474a30 \
         0x24 \
         45847212378479006099766816358861726414873720355505495069909394794949093093607 \
         55835259151215769394881684156457977412783812617123006733908193526332337539398 \
