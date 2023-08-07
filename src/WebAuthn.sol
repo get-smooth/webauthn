@@ -2,14 +2,13 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { Base64 } from "../lib/solady/src/utils/Base64.sol";
-import { ECDSA256r1 } from "../lib/secp256r1-verify/src/ECDSA256r1.sol";
 
 error InvalidAuthenticatorData();
 error InvalidClientData();
 
-/// @title A library to verify ECDSA signature though WebAuthn on the secp256r1 curve
+/// @title An abstract contract that validates the WebAuthn data and generates the message to recover
 /// @dev This implementation assumes the caller check if User Presence (0x01) or User Verification (0x04) are set
-library WebAuthn {
+abstract contract WebAuthn {
     /// @notice Validate the webauthn data and generate the signature message needed to recover
     /// @dev You may probably ask why we encode the challenge in base64 on-chain instead of
     ///      of sending it already encoded to save some gas. This library is opiniated and
@@ -48,30 +47,6 @@ library WebAuthn {
 
             // Verify the signature over sha256(authenticatorData || sha256(clientData))
             return sha256(abi.encodePacked(authenticatorData, sha256(clientData)));
-        }
-    }
-
-    /// @notice Verify ECDSA signature though WebAuthn on the secp256r1 curve
-    function verify(
-        bytes1 authenticatorDataFlagMask,
-        bytes calldata authenticatorData,
-        bytes calldata clientData,
-        bytes calldata clientChallenge,
-        uint256 clientChallengeOffset,
-        uint256 r,
-        uint256 s,
-        uint256 qx,
-        uint256 qy
-    )
-        internal
-        returns (bool)
-    {
-        unchecked {
-            bytes32 message = generateMessage(
-                authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge, clientChallengeOffset
-            );
-
-            return ECDSA256r1.verify(message, r, s, qx, qy);
         }
     }
 }

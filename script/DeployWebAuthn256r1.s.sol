@@ -2,42 +2,13 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseScript } from "./BaseScript.s.sol";
-import { WebAuthn } from "../src/WebAuthn.sol";
-
-contract LibraryWrapper {
-    function verify(
-        bytes1 authenticatorDataFlagMask,
-        bytes calldata authenticatorData,
-        bytes calldata clientData,
-        bytes calldata clientChallengeBase64,
-        uint256 clientChallengeOffset,
-        uint256 r,
-        uint256 s,
-        uint256 qx,
-        uint256 qy
-    )
-        external
-        returns (bool)
-    {
-        return WebAuthn.verify(
-            authenticatorDataFlagMask,
-            authenticatorData,
-            clientData,
-            clientChallengeBase64,
-            clientChallengeOffset,
-            r,
-            s,
-            qx,
-            qy
-        );
-    }
-}
+import { WebAuthn256r1 } from "../src/WebAuthn256r1.sol";
 
 /// @notice This script deploys the ECDSA256r1 library
 contract MyScript is BaseScript {
     function run() external broadcast returns (address addr) {
         // deploy the library contract and return the address
-        addr = address(new LibraryWrapper());
+        addr = address(new WebAuthn256r1());
     }
 }
 
