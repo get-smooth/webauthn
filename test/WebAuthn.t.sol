@@ -68,8 +68,8 @@ contract ContractTest is Test {
                 hex"65223a224e546f2d3161424547526e78786a6d6b61544865687972444e583369"
                 hex"7a6c7169316f776d4f643955474a30222c226f726967696e223a226874747073"
                 hex"3a2f2f66726573682e6c65646765722e636f6d222c2263726f73734f726967696e223a66616c73657d",
-                // clientChallengeBase64
-                hex"4e546f2d3161424547526e78786a6d6b61544865687972444e5833697a6c7169316f776d4f643955474a30",
+                // clientChallenge
+                hex"353a3ed5a0441919f1c639a46931de872ac3357de2ce5aa2d68c2639df54189d",
                 // clientChallengeOffset
                 0x24,
                 // r
@@ -95,8 +95,8 @@ contract ContractTest is Test {
             hex"65223a224e546f2d3161424547526e78786a6d6b61544865687972444e583369"
             hex"7a6c7169316f776d4f643955474a30222c226f726967696e223a226874747073"
             hex"3a2f2f66726573682e6c65646765722e636f6d222c2263726f73734f726967696e223a66616c73657d",
-            // clientChallengeBase64
-            hex"4e546f2d3161424547526e78786a6d6b61544865687972444e5833697a6c7169316f776d4f643955474a30",
+            // clientChallenge
+            hex"353a3ed5a0441919f1c639a46931de872ac3357de2ce5aa2d68c2639df54189d",
             // clientChallengeOffset
             0x24
         );
