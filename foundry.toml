@@ -16,6 +16,7 @@
   solc = "0.8.19"
   src = "src"
   test = "test"
+  ffi = true
   remappings = [
     "ds-test/=lib/forge-std/lib/ds-test/src/",
     "forge-std/=lib/forge-std/src/",

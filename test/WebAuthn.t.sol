@@ -2,9 +2,9 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { Test } from "../lib/forge-std/src/Test.sol";
-import { WebAuthn } from "../src/WebAuthn.sol";
+import { WebAuthnBase } from "../src/WebAuthnBase.sol";
 
-contract WebAuthnImplementation is WebAuthn {
+contract WebAuthnImplementation is WebAuthnBase {
     function _generateMessage(
         bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,

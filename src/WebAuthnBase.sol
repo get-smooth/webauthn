@@ -6,9 +6,10 @@ import { Base64 } from "../lib/solady/src/utils/Base64.sol";
 error InvalidAuthenticatorData();
 error InvalidClientData();
 
-/// @title An abstract contract that validates the WebAuthn data and generates the message to recover
+/// @title WebAuthnBase
+/// @notice An abstract contract that validates the WebAuthn data and generates the message to recover
 /// @dev This implementation assumes the caller check if User Presence (0x01) or User Verification (0x04) are set
-abstract contract WebAuthn {
+abstract contract WebAuthnBase {
     /// @notice Validate the webauthn data and generate the signature message needed to recover
     /// @dev You may probably ask why we encode the challenge in base64 on-chain instead of
     ///      of sending it already encoded to save some gas. This library is opiniated and

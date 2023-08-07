@@ -10,6 +10,7 @@
     "node": ">= 18"
   },
   "devDependencies": {
+    "@0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-computation": "^2.2.0",
     "lefthook": "^1.4.1",
     "prettier": "^2.8.7",
     "solhint-community": "^3.5.0"
