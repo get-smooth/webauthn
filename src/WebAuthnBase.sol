@@ -3,13 +3,14 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { Base64 } from "../lib/solady/src/utils/Base64.sol";
 
-error InvalidAuthenticatorData();
-error InvalidClientData();
-
 /// @title WebAuthnBase
 /// @notice An abstract contract that validates the WebAuthn data and generates the message to recover
 /// @dev This implementation assumes the caller check if User Presence (0x01) or User Verification (0x04) are set
 abstract contract WebAuthnBase {
+    error InvalidAuthenticatorData();
+    error InvalidClientData();
+    error InvalidChallenge();
+
     /// @notice Validate the webauthn data and generate the signature message needed to recover
     /// @dev You may probably ask why we encode the challenge in base64 on-chain instead of
     ///      of sending it already encoded to save some gas. This library is opiniated and
@@ -33,6 +34,9 @@ abstract contract WebAuthnBase {
             if ((authenticatorData[32] & authenticatorDataFlagMask) != authenticatorDataFlagMask) {
                 revert InvalidAuthenticatorData();
             }
+
+            // Ensure the client challenge is not null
+            if (clientChallenge.length == 0) revert InvalidChallenge();
 
             // Encode the client challenge in base64 and explicitly convert it to bytes
             bytes memory challengeEncoded = bytes(Base64.encode(clientChallenge, true, true));
