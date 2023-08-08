@@ -38,6 +38,9 @@ abstract contract WebAuthnBase {
             bytes memory challengeEncoded = bytes(Base64.encode(clientChallenge, true, true));
 
             // Extract the challenge from the client data and hash it
+            // @dev: we don't need to check the overflow here as the EVM will automatically revert if
+            //       `clientChallengeOffset + challengeEncoded.length` overflow. This is because we will
+            //       try to access a chunk of memory by passing an end index lower than the start index
             bytes32 challengeHashed =
                 keccak256(clientData[clientChallengeOffset:(clientChallengeOffset + challengeEncoded.length)]);
 
