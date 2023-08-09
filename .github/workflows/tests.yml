@@ -49,7 +49,7 @@ jobs:
 
       # TODO: Rework the job to correctly print the output of the test command
       - name: Run tests with gas reporting
-        run: forge test --gas-report > gasreport.ansi
+        run: forge test --gas-report --no-match-test "test(Fuzz)?_RevertWhen_\\w{1,}?" > gasreport.ansi
 
       - name: Compare gas reports
         uses: Rubilmax/foundry-gas-diff@v3.14
