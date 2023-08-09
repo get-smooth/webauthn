@@ -1,6 +1,6 @@
 {
   "name": "@0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn",
-  "description": "WIIIIIP - WebAuthn library in Solidity",
+  "description": "WebAuthn library in Solidity",
   "version": "0.0.1",
   "author": "0x90d2b2b7fb7599eebb6e7a32980857d8 https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8",
   "repository": "github:@0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn",
@@ -22,6 +22,12 @@
     "evm",
     "foundry",
     "smart-contracts",
-    "solidity"
+    "solidity",
+    "webauthn",
+    "p256r1",
+    "secp256r1",
+    "EIP-4337",
+    "Account Abstraction",
+    "Smart Account"
   ]
 }
