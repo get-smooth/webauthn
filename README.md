@@ -1,4 +1,4 @@
-# Foundry Template
+# WebAuthn Library
 
 [![Open in Github][github-editor-badge]][github-editor-url] [![Github Actions][gha-quality-badge]][gha-quality-url]
 [![Github Actions][gha-test-badge]][gha-test-url]
@@ -20,28 +20,91 @@
 [foundry]: https://book.getfoundry.sh/
 [foundry-badge]: https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg
 [license]: ./LICENSE.md
-[license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
+[license-badge]: https://img.shields.io/badge/License-APACHE2-pink.svg
 
-A Foundry-based template for developing Solidity smart contracts, with sensible defaults. Based on
-[@PaulRBerg](https://github.com/PaulRBerg) [template](https://github.com/PaulRBerg/foundry-template).
+## Description
 
-## What's Inside
+`webauthn` is a library designed for signature validation through the Web Authentication process. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn). Support for additional algorithms is planned for future releases.
 
-- [Forge](https://github.com/foundry-rs/foundry/blob/master/forge): compile, test, fuzz, format, and deploy smart
-  contracts
-- [Forge Std](https://github.com/foundry-rs/forge-std): collection of helpful contracts and cheatcodes for testing
-- [PRBTest](https://github.com/PaulRBerg/prb-test): modern collection of testing assertions and logging utilities
-- [Prettier](https://github.com/prettier/prettier): code formatter for non-Solidity files
-- [Solhint Community](https://github.com/solhint-community/solhint-community): linter for Solidity code
-- [Make](https://www.gnu.org/software/make/manual/make.html): build automation tool that allows developers to automate
-  repetitive tasks
-- [Lefthook](https://github.com/evilmartians/lefthook): Fast and powerful Git hooks manager for any type of projects
+## Installation
 
-## Getting Started
+### Foundry
 
-### Prerequisites
+To install the `webauthn` package in a Foundry project, execute the following command:
 
-This repository uses [`make`](https://www.gnu.org/software/make/manual/make.html) to automate repetitive tasks.
+```sh
+forge install https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn
+```
+
+This command will install the latest version of the package in your lib directory. To install a specific version of the
+library, follow the instructions in the
+[official Foundry documentation](https://book.getfoundry.sh/reference/forge/forge-install?highlight=forge%20install#forge-install).
+
+### Hardhat or Truffle
+
+To install the `webauthn` package in a Hardhat or Truffle project, use `npm` to run the following command:
+
+```sh
+npm install @0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn
+```
+
+After the installation, import the package into your project and use it to validate a Web Authentication signature.
+
+> ⚠️ Note: This package is not published on the npm registry, and is only available on GitHub Packages. You need to be
+> authenticated with GitHub Packages to install it. For more information, please refer to the
+> [troubleshooting section](#setup-github-registry). We are willing to deploy it on the npm registry if there is a need.
+> Please open an issue if you would like to see this package on the npm registry.
+
+## Usage
+
+This repository supports the verification of Web Authentication signatures using the ECDSA signature scheme with the secp256r1 curve. The non-experimental implementations from the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn) are all supported. After you've integrated this library into your project, you can freely import and use the implementation that best suits your specific use cases and requirements. Let's take a more detailed look at each one.
+
+> 🚨 None of the implementations have been audited. DO NOT USE THEM IN PRODUCTION.
+### Scripts
+
+This repository includes a [script](./script) directory containing a set of scripts that can be used to deploy the
+different implementations on-chain. Each script contains a set of instructions and an example of how to use it. The
+scripts are expected to be run using the `forge script` command.
+
+## Gas reports
+
+These gas reports were produced using the `0.8.19` version of the Solidity compiler (with 100k optimizer runs), specifically for the [`0.1.0`](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.1.0) version of the library.
+
+
+| test/WebAuthnBase.t.sol:WebAuthnImplementation contract    | Deployment Cost | Deployment Size | min    | avg    | median | max    | # calls |
+|------------------------------------------------------------|-----------------|-----------------|--------|--------|--------|--------|---------|
+| Deployment Cost                                            | 292131          | 1491            |        |        |        |        |         |
+| Function Name                                              |                 |                 |        |        |        |        |         |
+| _generateMessage                                           |                 |                 | 5194   | 5225   | 5194   | 5385   | 6       |
+
+This runtime cost corresponds to the real cost added by the WebAuthn signature verification process
+
+| src/WebAuthn256r1.sol:WebAuthn256r1 contract                | Deployment Cost | Deployment Size | min    | avg    | median | max    | # calls |
+|------------------------------------------------------------|-----------------|-----------------|--------|--------|--------|--------|---------|
+| Deployment Cost                                            | 1889590         | 9470            |        |        |        |        |         |
+| Function Name                                              |                 |                 |        |        |        |        |         |
+| verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,address)(bool) |                 |                 | 80456  | 80456  | 80456  | 80456  | 1       |
+| verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,uint256,uint256)(bool) |                 |                 | 209146 | 209146 | 209146 | 209146 | 1       |
+
+These costs can be considered end-to-end as it includes the cost of the different implementation in the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn)
+
+> ℹ️ Tests expected to revert are excluded from the gas report
+
+## Contributing
+
+To contribute to the project, you must have Foundry and Node.js installed on your system. You can download them from
+their official websites:
+
+- Node.js: https://nodejs.org/
+- Foundry: https://book.getfoundry.sh/getting-started/installation
+
+> ℹ️ We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage your Node.js versions. Nvm is a flexible node
+> version manager that allows you to switch between different versions of Node.js effortlessly. This repository includes
+> a `.nvmrc` file at the root of the project. If you have nvm installed, you can run `nvm use` at the root of the
+> project to automatically switch to the appropriate version of Node.js.
+
+Following the installation of Foundry and Node.js, there's an additional dependency called `make` that needs to be
+addressed.
 
 `make` is a build automation tool that employs a file known as a makefile to automate the construction of executable
 programs and libraries. The makefile details the process of deriving the target program from the source files and other
@@ -51,43 +114,38 @@ is our primary tool in a multi-environment repository. It enables us to centrali
 the various commands provided by the `foundry` cli. If you're unfamiliar with `make`, you can read more about it
 [here](https://www.gnu.org/software/make/manual/make.html).
 
-> 💡 Running make at the root of the project will display a list of all the available commands. This can be useful to
-> know what you can do with the project.
-
-#### Make of Linux
-
 `make` is automatically included in all modern Linux distributions. If you're using Linux, you should be able to use
-`make` without any additional steps. If not, you can likely find it in the package tool you usually use.
-
-#### Make on MacOS
-
-MacOS users can install `make` using [Homebrew](https://formulae.brew.sh/formula/make) with the following command:
+`make` without any additional steps. If not, you can likely find it in the package tool you usually use. MacOS users can
+install `make` using [Homebrew](https://formulae.brew.sh/formula/make) with the following command:
 
 ```sh
 brew install make
 ```
 
-### Installation
+At this point, you should have all the required dependencies installed on your system.
 
-Click the [`Use this template`](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/template-foundry/generate) button at the top of the page to
-create a new repository with this repo as the initial state.
+> 💡 Running make at the root of the project will display a list of all the available commands. This can be useful to
+> know what you can do
 
-Or, if you prefer to install the template manually:
+### Installing the dependencies
+
+To install the project dependencies, you can run the following command:
 
 ```sh
-forge init my-project --template https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/template-foundry
-cd my-project
-make install # install the forge dependencies and the npm dependencies
+make install
 ```
 
-If this is your first time with Foundry, check out the
-[installation](https://github.com/foundry-rs/foundry#installation) instructions.
+This command will install the forge dependencies in the `lib/` directory, the npm dependencies in the `node_modules`
+directory and the git hooks defined in the project ([refer to the Git hooks section](#git-hooks)s to learn more about
+them). These dependencies aren't shipped in production; they're utility dependencies used to build, test, lint, format,
+and more, for the project.
 
-> ℹ️ As part of the initialization process, a one-time script, which can be found
-> [here](./.github/workflows/setup-template.yml), is utilized to tailor the template to your specific project. This
-> script will automatically update the [package.json](./package.json) file with details like your project's name, the
-> author's name, the homepage, the repository URL, etc. Additionally, it will remove unnecessary files, such as the
-> FUNDING.yml file and the initialization script itself.
+> ⚠️ This package uses a dependency installed on the Github package registry, meaning you need to authenticate with
+> GitHub Packages to install it. For more information, refer to the [troubleshooting section](#setup-github-registry).
+> We're open to deploying it on the npm registry if there's a demand for it. Please open an issue if you'd like to see
+> this package on the npm registry.
+
+Next, let's set up the git hooks.
 
 ### Git hooks
 
@@ -111,144 +169,94 @@ If you wish to run Lefthook manually, you can use the following command:
 make hooks
 ```
 
-Executing this will activate all the Git hooks specified in the [lefthook](./lefthook.yml) file, including commands for
-linting, formatting, testing, and compiling.
+This will run all the Git hooks defined in the [lefthook](./lefthook.yml) file.
 
 #### Skipping git hooks
 
-If you need to intentionally skip Lefthook, you can pass the `--no-verify` flag to the git push command. For example to
-bypass Lefthook when pushing code, use the following command:
+Should you need to intentionally skip Lefthook, you can pass the `--no-verify` flag to the git push command. To bypass
+Lefthook when pushing code, use the following command:
 
 ```sh
 git push origin --no-verify
 ```
 
-## Features
+## Testing
 
-This template builds upon the frameworks and libraries mentioned above, so for details about their specific features,
-please consult their respective documentation.
+### Unit tests
 
-For example, if you're interested in exploring Foundry in more detail, you should look at the
-[Foundry Book](https://book.getfoundry.sh/). In particular, you may be interested in reading the
-[Writing Tests](https://book.getfoundry.sh/forge/writing-tests.html) tutorial.
-
-### Sensible Defaults
-
-This template comes with a set of sensible default configurations for you to use. These defaults can be found in the
-following files:
-
-```text
-├── .gitignore
-├── .prettierignore
-├── .prettierrc.yml
-├── .solhint.json
-├── .nvmrc
-├── lefthook.yml
-├── makefile
-├── slither.config.json
-└── foundry.toml
-```
-
-### GitHub Actions
-
-This template comes with GitHub Actions pre-configured.
-
-- [quality-checks.yml](./.github/workflows/quality-checks.yml): runs the compilation command, the linter and the
-  formatter on every push and pull request made to the `main` branch. The size of the contracts is printed in the logs.
-- [static-analysis.yml](./.github/workflows/static-analysis.yml): runs the static analysis tool on every push and pull
-  request made to the `main` branch. This action uses [slither](https://github.com/crytic/slither) and is only triggered
-  when specific files are modified.
-- [tests.yml](./.github/workflows/tests.yml): runs the tests onsevery push and pull request made to the `main` branch.
-  This action also compare the gas cost between the `main` branch and the pull request branch and post the difference as
-  a comment on the pull request.
-- [release-package.yml](./.github/workflows/release-package.yml): creates a new release every time you push a new tag to
-  the repository. This action is only triggered on tags starting with `v`. Once the release is created, the action is
-  also in charge of deploying the documentation to the `gh-pages` branch. **THIS ACTION NEEDS AN ACTION FROM YOUR SIDE
-  TO WORK**
-
-You can edit the CI scripts in the [workflows directory](./.github/workflows).
-
-#### Configure the release action
-
-The release action is in charge of deploying the documentation to the `gh-pages` branch. To do so, it needs to have a
-personal access token with the right permissions. To create this token, go to the
-[settings of your Github account](https://github.com/settings/tokens?type=beta). Make sure to select the permissions
-listed below. Once create, copy the token, go to the Github repository of this project and create a secret named
-`RELEASE_TOKEN` with the value of the token you just created. Here are the **repositories** permissions required by the
-token:
-
-- Actions: Read and write
-- Contents: Read and write
-- Commit statuses: Read-only
-- Metadata: Read-only
-- Pull requests: Read-only
-
-## Writing Tests
-
-To write a new test contract, you start by importing [PRBTest](https://github.com/PaulRBerg/prb-test) and inherit from
-it in your test contract. PRBTest comes with a pre-instantiated [cheatcodes](https://book.getfoundry.sh/cheatcodes/)
-environment accessible via the `vm` property. If you would like to view the logs in the terminal output you can run the
-dedicated verbose command and use
-[console.log](https://book.getfoundry.sh/faq?highlight=console.log#how-do-i-use-consolelog).
-
-This template comes with an example test contract [Foo.t.sol](./test/Foo.t.sol)
-
-## Usage
-
-You can access a list of all available commands by running `make` in the project's root directory.
+The unit tests are stored in the `test` directory. They test individual functions of the package in isolation. These
+tests are automatically run by GitHub Actions with every push to the `main` branch and on every pull request targeting
+this branch. They are also automatically run by the git hook on every push to a remote repository if you have installed
+it ([refer to the Git hooks section](#git-hooks)). Alternatively, you can run them locally by executing the following
+command in the project directory:
 
 ```sh
-make
+make test
 ```
 
-These commands are outlined in the [makefile](./Makefile).
+> ℹ️ By adding the sufix `-v` the test command will run in verbose mode, displaying valuable output for debugging.
 
-## Scripts
+For your information, these tests are written using [forge](https://book.getfoundry.sh/forge/tests), and some employ the
+property-based testing pattern _(fuzzing)_ to generate random inputs for the functions under test.
 
-### Deploy
+The tests use one cheat code` you should be aware of:
 
-This script is located in the [script](./script) directory. It deploys the contract to a network. For example, to deploy
-to [Anvil](https://book.getfoundry.sh/anvil/), you can run the following command:
+- `vm.ffi`: This cheat code allows us to execute an arbitrary command during the test suite. This cheat code is not
+  enabled by default when creating a new foundry project, but in our case, it's enabled in our configuration
+  ([foundry configuration](./foundry.toml)) for all tests. This cheat code is used to run the computation library that
+  calculates 256 points on the secp256r1 elliptic curve from a public key. This is required for the variants that need
+  these points to be deployed on-chain. Therefore, even if it's not explicit, every time you run the test suite, a
+  Node.js script is executed at least one time. You can learn more about the library we use
+  [here](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-computation).
+
+> 📖 Cheatcodes are special instructions exposed by Foundry to enhance the developer experience. Learn more about them
+> [here](https://book.getfoundry.sh/cheatcodes/).
+
+> 💡 Run `make` to learn how to run the test in verbose mode, or display the coverage, or even generate a gas report.
+
+### Quality
+
+This repository uses `forge-fmt`, `solhint`, and `prettier` to enforce code quality. These tools are automatically run by
+the GitHub Actions on every push to the `main` branch and on every pull request targeting this branch. They are also
+automatically run by the git hook on every push to a remote repository if you have installed it
+([refer to the Git hooks section](#git-hooks)). Alternatively, you can run them locally by executing the following
+command in the project directory:
 
 ```sh
-forge script script/Deploy.s.sol --broadcast --fork-url http://localhost:8545
+make lint # run the linter
+make format # run the formatter
+make quality # run both
 ```
 
-For this script to work, you need to have a `MNEMONIC` environment variable set to a valid
-[BIP39 mnemonic](https://iancoleman.io/bip39/).
+> ℹ️ By adding the suffix `-fix` the linter and the formatter will try to fix the issues automatically.
 
-For instructions on how to deploy to a testnet or mainnet, check out the
-[Solidity Scripting](https://book.getfoundry.sh/tutorials/solidity-scripting.html) tutorial.
+## Troubleshootings
 
-## Notes
+### Setup Github registry
 
-1. Foundry uses [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to manage dependencies. For
-   detailed instructions on working with dependencies, please refer to the
-   [guide](https://book.getfoundry.sh/projects/dependencies.html) in the book
-2. You don't have to create a `.env` file, but filling in the environment variables may be useful when debugging and
-   testing against a fork.
-3. This template uses [npm](https://www.npmjs.com/) to manage JavaScript dependencies.
-4. This template only uses [slither](https://github.com/crytic/slither) in the CI pipeline. If you want to run it
-   locally, you need to install it for yourself by following the instructions in the
-   [documentation](https://github.com/crytic/slither#how-to-install).
-5. This template includes a opiniated [contributing guide](./.github/CONTRIBUTING.md) you free to update.
-6. Remappings are configured in the [foundry.toml file](./foundry.toml) file in order to centralize the configuration.
-   Feel free to update them.
+You need to configure npm to use the Github registry. You can do so using the following command in your terminal:
 
-## Related Efforts
+```sh
+npm config set @0x90d2b2b7fb7599eebb6e7a32980857d8:registry=https://npm.pkg.github.com
+```
 
-- [abigger87/femplate](https://github.com/abigger87/femplate)
-- [cleanunicorn/ethereum-smartcontract-template](https://github.com/cleanunicorn/ethereum-smartcontract-template)
-- [foundry-rs/forge-template](https://github.com/foundry-rs/forge-template)
-- [FrankieIsLost/forge-template](https://github.com/FrankieIsLost/forge-template)
-- [PaulRBerg/foundry-template](https://github.com/PaulRBerg/foundry-template)
+This will instruct npm to use the Github registry for packages deployed by `@0x90d2b2b7fb7599eebb6e7a32980857d8`.
 
-## License
+Once the Github registry is configured, you have to create a **classic** token on Github. To do so, go to your
+[Github settings](https://github.com/settings/tokens). The token must have the read:packages scope. Once you have
+created the token, use the following command in your terminal to authenticate to the Github registry:
 
-This project is licensed under MIT.
+```sh
+npm login --auth-type=legacy --registry=https://npm.pkg.github.com
+```
+
+Your Github username is the username, and the password is the token you just created. At this point, your git should be
+configured to use the Github Package Registry for our packages.
+
+> ⚠️ For more information, please refer to the
+> [GitHub documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-a-package)
 
 ## Acknowledgements
 
-This template has been boostrapped using [@PaulRBerg](https://github.com/PaulRBerg)
-[template](https://github.com/PaulRBerg/foundry-template). This version is a bit more opinionated (`make`...) and comes
-with a few more features. Thanks to him for his valuable contributions to the community.
+Special thanks to [btchip](https://github.com/btchip) for developing the reference implementation
+[here](https://github.com/btchip/Webauthn.sol) and for the invaluable guidance through the WebAuthn specification.
