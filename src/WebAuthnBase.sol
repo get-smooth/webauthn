@@ -31,7 +31,7 @@ abstract contract WebAuthnBase {
     {
         unchecked {
             // Let the caller check if User Presence (0x01) or User Verification (0x04) are set
-            if ((authenticatorData[32] & authenticatorDataFlagMask) != authenticatorDataFlagMask) {
+            if ((authenticatorData[32] & authenticatorDataFlagMask) == 0) {
                 revert InvalidAuthenticatorData();
             }
 
