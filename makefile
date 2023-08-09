@@ -79,7 +79,7 @@ forge-coverage:
 
 .PHONY: forge-test-gas
 forge-test-gas:
-	@runcmd forge test --gas-report
+	@runcmd forge test --gas-report --no-match-test "test(Fuzz)?_RevertWhen_\\w{1,}?"
 
 .PHONY: forge-clean
 clean:
