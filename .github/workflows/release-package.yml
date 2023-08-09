@@ -20,8 +20,7 @@ jobs:
         id: create_release
         uses: "marvinpinto/action-automatic-releases@v1.2.1"
         with:
-          # TODO: YOU MUST CONFIGURE THIS TOKEN BY OURSEFL. CHECK THE README FOR MORE INFORMATION.
-          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          repo_token: "${{ secrets.SMOOTH_QDQD_WEBAUTHN_RELEASE_TOKEN }}"
           prerelease: false
 
   deploy-doc:
