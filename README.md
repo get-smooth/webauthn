@@ -4,7 +4,7 @@
 [![Github Actions][gha-test-badge]][gha-test-url]
 [![Github Actions][gha-static-analysis-badge]][gha-static-analysis-url]
 [![Github Actions][gha-release-badge]][gha-release-url] [![Foundry][foundry-badge]][foundry]
-[![License: MIT][license-badge]][license]
+[![License: MIT][license-badge]][license] ![Is it audited?][audit]
 
 [github-editor-url]: https://github.dev/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/tree/main
 [github-editor-badge]: https://img.shields.io/badge/Github-Open%20the%20Editor-purple?logo=github
@@ -21,6 +21,7 @@
 [foundry-badge]: https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg
 [license]: ./LICENSE.md
 [license-badge]: https://img.shields.io/badge/License-APACHE2-pink.svg
+[audit]: https://img.shields.io/badge/Audited-No-red.svg
 
 ## Description
 
