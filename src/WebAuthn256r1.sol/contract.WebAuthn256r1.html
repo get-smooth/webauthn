@@ -176,7 +176,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="webauthn256r1"><a class="header" href="#webauthn256r1">WebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/30fb3f93b8284e69b023293356403f38c43eafe6/src/WebAuthn256r1.sol">Git Source</a></p>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/f811244df0e326dc399f245badbc135ae0c6f9e7/src/WebAuthn256r1.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 <a href="/src/WebAuthnBase.sol/abstract.WebAuthnBase.html">WebAuthnBase</a></p>
 <p>A library to verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
@@ -193,21 +193,6 @@
     uint256 s,
     uint256 qx,
     uint256 qy
-)
-    external
-    returns (bool);
-</code></pre>
-<h3 id="verify-1"><a class="header" href="#verify-1">verify</a></h3>
-<p>Verify ECDSA signature though WebAuthn on the secp256r1 curve using a precomputed table</p>
-<pre><code class="language-solidity">function verify(
-    bytes1 authenticatorDataFlagMask,
-    bytes calldata authenticatorData,
-    bytes calldata clientData,
-    bytes calldata clientChallenge,
-    uint256 clientChallengeOffset,
-    uint256 r,
-    uint256 s,
-    address precomputedTable
 )
     external
     returns (bool);
