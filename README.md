@@ -69,25 +69,18 @@ scripts are expected to be run using the `forge script` command.
 
 ## Gas reports
 
-These gas reports were produced using the `0.8.19` version of the Solidity compiler (with 100k optimizer runs), specifically for the [`0.1.0`](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.1.0) version of the library.
+This gas report was produced using the `0.8.19` version of the Solidity compiler (with 100k optimizer runs), specifically for the [`0.3.0`](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.3.0) version of the library.
 
+| test/WebAuthnWrapper.sol:WebAuthnWrapper contract |                 |        |        |        |         |
+|---------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                   | Deployment Size |        |        |        |         |
+| 1321776                                           | 6634            |        |        |        |         |
+| Function Name                                     | min             | avg    | median | max    | # calls |
+| _generateMessage                                  | 5230            | 5261   | 5230   | 5421   | 6       |
+| verify                                            | 209257          | 209257 | 209257 | 209257 | 1       |
 
-| test/WebAuthnBase.t.sol:WebAuthnImplementation contract    | Deployment Cost | Deployment Size | min    | avg    | median | max    | # calls |
-|------------------------------------------------------------|-----------------|-----------------|--------|--------|--------|--------|---------|
-| Deployment Cost                                            | 292131          | 1491            |        |        |        |        |         |
-| Function Name                                              |                 |                 |        |        |        |        |         |
-| _generateMessage                                           |                 |                 | 5194   | 5225   | 5194   | 5385   | 6       |
-
-This runtime cost corresponds to the real cost added by the WebAuthn signature verification process
-
-| src/WebAuthn256r1.sol:WebAuthn256r1 contract                | Deployment Cost | Deployment Size | min    | avg    | median | max    | # calls |
-|------------------------------------------------------------|-----------------|-----------------|--------|--------|--------|--------|---------|
-| Deployment Cost                                            | 1889590         | 9470            |        |        |        |        |         |
-| Function Name                                              |                 |                 |        |        |        |        |         |
-| verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,address)(bool) |                 |                 | 80456  | 80456  | 80456  | 80456  | 1       |
-| verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,uint256,uint256)(bool) |                 |                 | 209146 | 209146 | 209146 | 209146 | 1       |
-
-These costs can be considered end-to-end as it includes the cost of the different implementation in the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify)
+These costs can be considered end-to-end as they include the cost of the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify).
+Note the library is wrapped in a contract that exposes the different functions of the library, impacting the gas cost of the benchmark.
 
 > ℹ️ Tests expected to revert are excluded from the gas report
 
