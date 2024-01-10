@@ -2,29 +2,29 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseScript } from "./BaseScript.s.sol";
-import { WebAuthn256r1 } from "../src/WebAuthn256r1.sol";
+import { WebAuthnWrapper } from "test/WebAuthnWrapper.sol";
 
 /// @notice This script deploys the ECDSA256r1 library
-contract MyScript is BaseScript {
+contract DeployScript is BaseScript {
     function run() external broadcast returns (address addr) {
         // deploy the library contract and return the address
-        addr = address(new WebAuthn256r1());
+        addr = address(new WebAuthnWrapper());
     }
 }
 
 /*
 
     ℹ️ HOW TO USE THIS SCRIPT USING A LEDGER:
-    forge script script/DeployWebAuthn.s.sol:MyScript --rpc-url <RPC_URL> --ledger --sender <ACCOUNT_ADDRESS> \
+    forge script script/DeployWebAuthn256r1.s.sol:DeployScript --rpc-url <RPC_URL> --ledger --sender <ACCOUNT_ADDRESS> \
     [--broadcast]
 
 
     ℹ️ HOW TO USE THIS SCRIPT WITH AN ARBITRARY PRIVATE KEY (NOT RECOMMENDED):
-    PRIVATE_KEY=<PRIVATE_KEY> forge script script/DeployWebAuthn.s.sol:MyScript --rpc-url <RPC_URL> [--broadcast]
+PRIVATE_KEY=<PRIVATE_KEY> forge script script/DeployWebAuthn256r1.s.sol:DeployScript --rpc-url <RPC_URL> [--broadcast]
 
 
     ℹ️ HOW TO USE THIS SCRIPT ON ANVIL IN DEFAULT MODE:
-    forge script script/DeployWebAuthn.s.sol:MyScript --rpc-url http://127.0.0.1:8545 --broadcast --sender \
+    forge script script/DeployWebAuthn256r1.s.sol:DeployScript --rpc-url http://127.0.0.1:8545 --broadcast --sender \
     0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --mnemonics "test test test test test test test test test test test junk"
 
 
