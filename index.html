@@ -89,9 +89,11 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html" class="active">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="src/WebAuthn256r1.sol/contract.WebAuthn256r1.html">WebAuthn256r1</a></li><li class="chapter-item "><a href="src/WebAuthnBase.sol/abstract.WebAuthnBase.html">WebAuthnBase</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html" class="active">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="src/WebAuthn256r1.sol/library.WebAuthn256r1.html">WebAuthn256r1</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -212,22 +214,17 @@ Please open an issue if you would like to see this package on the npm registry.<
 different implementations on-chain. Each script contains a set of instructions and an example of how to use it. The
 scripts are expected to be run using the <code>forge script</code> command.</p>
 <h2 id="gas-reports"><a class="header" href="#gas-reports">Gas reports</a></h2>
-<p>These gas reports were produced using the <code>0.8.19</code> version of the Solidity compiler (with 100k optimizer runs), specifically for the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.1.0"><code>0.1.0</code></a> version of the library.</p>
-<div class="table-wrapper"><table><thead><tr><th>test/WebAuthnBase.t.sol:WebAuthnImplementation contract</th><th>Deployment Cost</th><th>Deployment Size</th><th>min</th><th>avg</th><th>median</th><th>max</th><th># calls</th></tr></thead><tbody>
-<tr><td>Deployment Cost</td><td>292131</td><td>1491</td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>Function Name</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>_generateMessage</td><td></td><td></td><td>5194</td><td>5225</td><td>5194</td><td>5385</td><td>6</td></tr>
+<p>This gas report was produced using the <code>0.8.19</code> version of the Solidity compiler (with 100k optimizer runs), specifically for the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.3.0"><code>0.3.0</code></a> version of the library.</p>
+<div class="table-wrapper"><table><thead><tr><th>test/WebAuthnWrapper.sol:WebAuthnWrapper contract</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody>
+<tr><td>Deployment Cost</td><td>Deployment Size</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>1321776</td><td>6634</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Function Name</td><td>min</td><td>avg</td><td>median</td><td>max</td><td># calls</td></tr>
+<tr><td>_generateMessage</td><td>5230</td><td>5261</td><td>5230</td><td>5421</td><td>6</td></tr>
+<tr><td>verify</td><td>209257</td><td>209257</td><td>209257</td><td>209257</td><td>1</td></tr>
 </tbody></table>
 </div>
-<p>This runtime cost corresponds to the real cost added by the WebAuthn signature verification process</p>
-<div class="table-wrapper"><table><thead><tr><th>src/WebAuthn256r1.sol:WebAuthn256r1 contract</th><th>Deployment Cost</th><th>Deployment Size</th><th>min</th><th>avg</th><th>median</th><th>max</th><th># calls</th></tr></thead><tbody>
-<tr><td>Deployment Cost</td><td>1889590</td><td>9470</td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>Function Name</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,address)(bool)</td><td></td><td></td><td>80456</td><td>80456</td><td>80456</td><td>80456</td><td>1</td></tr>
-<tr><td>verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,uint256,uint256)(bool)</td><td></td><td></td><td>209146</td><td>209146</td><td>209146</td><td>209146</td><td>1</td></tr>
-</tbody></table>
-</div>
-<p>These costs can be considered end-to-end as it includes the cost of the different implementation in the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify">secp256r1 library</a></p>
+<p>These costs can be considered end-to-end as they include the cost of the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify">secp256r1 library</a>.
+Note the library is wrapped in a contract that exposes the different functions of the library, impacting the gas cost of the benchmark.</p>
 <blockquote>
 <p>ℹ️ Tests expected to revert are excluded from the gas report</p>
 </blockquote>
@@ -367,7 +364,7 @@ configured to use the Github Package Registry for our packages.</p>
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next prefetch" href="src/WebAuthn256r1.sol/contract.WebAuthn256r1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -378,7 +375,7 @@ configured to use the Github Package Registry for our packages.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next prefetch" href="src/WebAuthn256r1.sol/contract.WebAuthn256r1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

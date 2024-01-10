@@ -90,9 +90,11 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="src/WebAuthn256r1.sol/contract.WebAuthn256r1.html">WebAuthn256r1</a></li><li class="chapter-item "><a href="src/WebAuthnBase.sol/abstract.WebAuthnBase.html">WebAuthnBase</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="src/WebAuthn256r1.sol/library.WebAuthn256r1.html">WebAuthn256r1</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -213,22 +215,17 @@ Please open an issue if you would like to see this package on the npm registry.<
 different implementations on-chain. Each script contains a set of instructions and an example of how to use it. The
 scripts are expected to be run using the <code>forge script</code> command.</p>
 <h2 id="gas-reports"><a class="header" href="#gas-reports">Gas reports</a></h2>
-<p>These gas reports were produced using the <code>0.8.19</code> version of the Solidity compiler (with 100k optimizer runs), specifically for the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.1.0"><code>0.1.0</code></a> version of the library.</p>
-<div class="table-wrapper"><table><thead><tr><th>test/WebAuthnBase.t.sol:WebAuthnImplementation contract</th><th>Deployment Cost</th><th>Deployment Size</th><th>min</th><th>avg</th><th>median</th><th>max</th><th># calls</th></tr></thead><tbody>
-<tr><td>Deployment Cost</td><td>292131</td><td>1491</td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>Function Name</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>_generateMessage</td><td></td><td></td><td>5194</td><td>5225</td><td>5194</td><td>5385</td><td>6</td></tr>
+<p>This gas report was produced using the <code>0.8.19</code> version of the Solidity compiler (with 100k optimizer runs), specifically for the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.3.0"><code>0.3.0</code></a> version of the library.</p>
+<div class="table-wrapper"><table><thead><tr><th>test/WebAuthnWrapper.sol:WebAuthnWrapper contract</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody>
+<tr><td>Deployment Cost</td><td>Deployment Size</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>1321776</td><td>6634</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Function Name</td><td>min</td><td>avg</td><td>median</td><td>max</td><td># calls</td></tr>
+<tr><td>_generateMessage</td><td>5230</td><td>5261</td><td>5230</td><td>5421</td><td>6</td></tr>
+<tr><td>verify</td><td>209257</td><td>209257</td><td>209257</td><td>209257</td><td>1</td></tr>
 </tbody></table>
 </div>
-<p>This runtime cost corresponds to the real cost added by the WebAuthn signature verification process</p>
-<div class="table-wrapper"><table><thead><tr><th>src/WebAuthn256r1.sol:WebAuthn256r1 contract</th><th>Deployment Cost</th><th>Deployment Size</th><th>min</th><th>avg</th><th>median</th><th>max</th><th># calls</th></tr></thead><tbody>
-<tr><td>Deployment Cost</td><td>1889590</td><td>9470</td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>Function Name</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,address)(bool)</td><td></td><td></td><td>80456</td><td>80456</td><td>80456</td><td>80456</td><td>1</td></tr>
-<tr><td>verify(bytes1,bytes,bytes,bytes,uint256,uint256,uint256,uint256,uint256)(bool)</td><td></td><td></td><td>209146</td><td>209146</td><td>209146</td><td>209146</td><td>1</td></tr>
-</tbody></table>
-</div>
-<p>These costs can be considered end-to-end as it includes the cost of the different implementation in the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify">secp256r1 library</a></p>
+<p>These costs can be considered end-to-end as they include the cost of the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify">secp256r1 library</a>.
+Note the library is wrapped in a contract that exposes the different functions of the library, impacting the gas cost of the benchmark.</p>
 <blockquote>
 <p>ℹ️ Tests expected to revert are excluded from the gas report</p>
 </blockquote>
@@ -363,31 +360,9 @@ configured to use the Github Package Registry for our packages.</p>
 <p>Special thanks to <a href="https://github.com/btchip">btchip</a> for developing the reference implementation
 <a href="https://github.com/btchip/Webauthn.sol">here</a> and for the invaluable guidance through the WebAuthn specification.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="webauthn256r1"><a class="header" href="#webauthn256r1">WebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/f811244df0e326dc399f245badbc135ae0c6f9e7/src/WebAuthn256r1.sol">Git Source</a></p>
-<p><strong>Inherits:</strong>
-<a href="src/WebAuthn256r1.sol//src/WebAuthnBase.sol/abstract.WebAuthnBase.html">WebAuthnBase</a></p>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/cd44a5068eaa9f83f67ea61c7228a865d78616e0/src/WebAuthn256r1.sol">Git Source</a></p>
 <p>A library to verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
-<h3 id="verify"><a class="header" href="#verify">verify</a></h3>
-<p>Verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
-<pre><code class="language-solidity">function verify(
-    bytes1 authenticatorDataFlagMask,
-    bytes calldata authenticatorData,
-    bytes calldata clientData,
-    bytes calldata clientChallenge,
-    uint256 clientChallengeOffset,
-    uint256 r,
-    uint256 s,
-    uint256 qx,
-    uint256 qy
-)
-    external
-    returns (bool);
-</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="webauthnbase"><a class="header" href="#webauthnbase">WebAuthnBase</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/f811244df0e326dc399f245badbc135ae0c6f9e7/src/WebAuthnBase.sol">Git Source</a></p>
-<p>An abstract contract that validates the WebAuthn data and generates the message to recover</p>
-<h2 id="functions-1"><a class="header" href="#functions-1">Functions</a></h2>
 <h3 id="generatemessage"><a class="header" href="#generatemessage">generateMessage</a></h3>
 <p>Validate the webauthn data and generate the signature message needed to recover</p>
 <p><em>1. The signature counter is not checked in this implementation because
@@ -440,6 +415,22 @@ and until proven otherwise compliant with the level 3 of the specification.</em>
 <tr><td><code>message</code></td><td><code>bytes32</code></td><td>The signature message needed to recover</td></tr>
 </tbody></table>
 </div>
+<h3 id="verify"><a class="header" href="#verify">verify</a></h3>
+<p>Verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
+<pre><code class="language-solidity">function verify(
+    bytes1 authenticatorDataFlagMask,
+    bytes calldata authenticatorData,
+    bytes calldata clientData,
+    bytes calldata clientChallenge,
+    uint256 clientChallengeOffset,
+    uint256 r,
+    uint256 s,
+    uint256 qx,
+    uint256 qy
+)
+    internal
+    returns (bool);
+</code></pre>
 <h2 id="errors"><a class="header" href="#errors">Errors</a></h2>
 <h3 id="invalidauthenticatordata"><a class="header" href="#invalidauthenticatordata">InvalidAuthenticatorData</a></h3>
 <pre><code class="language-solidity">error InvalidAuthenticatorData();
