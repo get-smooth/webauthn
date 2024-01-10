@@ -1,14 +1,14 @@
 [submodule "lib/forge-std"]
   branch = "v1"
   path = "lib/forge-std"
-  url = "https://github.com/foundry-rs/forge-std"
+  url = git@github.com:foundry-rs/forge-std.git
 [submodule "lib/prb-test"]
   branch = "release-v0"
   path = "lib/prb-test"
-  url = "https://github.com/PaulRBerg/prb-test"
+  url = git@github.com:PaulRBerg/prb-test.git
 [submodule "lib/secp256r1-verify"]
 	path = lib/secp256r1-verify
-	url = https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify
+	url = git@github.com:0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify.git
 [submodule "lib/solady"]
 	path = lib/solady
-	url = https://github.com/vectorized/solady
+	url = git@github.com:vectorized/solady.git
