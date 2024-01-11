@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
-          token: ${{ secrets.QDQD_PAT }}
+          token: ${{ secrets.SMOOTH_QDQD_PAT_RIVATE_REPOSITORY }}
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
-          token: ${{ secrets.QDQD_PAT }}
+          token: ${{ secrets.SMOOTH_QDQD_PAT_RIVATE_REPOSITORY }}
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
