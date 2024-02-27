@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="src/WebAuthn256r1.sol/library.WebAuthn256r1.html">WebAuthn256r1</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="src/IWebAuthn256r1.sol/interface.IWebAuthn256r1.html">IWebAuthn256r1</a></li><li class="chapter-item "><a href="src/WebAuthn256r1.sol/library.WebAuthn256r1.html">WebAuthn256r1</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -359,10 +359,28 @@ configured to use the Github Package Registry for our packages.</p>
 <h2 id="acknowledgements"><a class="header" href="#acknowledgements">Acknowledgements</a></h2>
 <p>Special thanks to <a href="https://github.com/btchip">btchip</a> for developing the reference implementation
 <a href="https://github.com/btchip/Webauthn.sol">here</a> and for the invaluable guidance through the WebAuthn specification.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="webauthn256r1"><a class="header" href="#webauthn256r1">WebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/cd44a5068eaa9f83f67ea61c7228a865d78616e0/src/WebAuthn256r1.sol">Git Source</a></p>
-<p>A library to verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iwebauthn256r1"><a class="header" href="#iwebauthn256r1">IWebAuthn256r1</a></h1>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/786aa3f50855be04284a783ca4f4eb44ed06c972/src/IWebAuthn256r1.sol">Git Source</a></p>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<h3 id="verify"><a class="header" href="#verify">verify</a></h3>
+<pre><code class="language-solidity">function verify(
+    bytes1 authenticatorDataFlagMask,
+    bytes calldata authenticatorData,
+    bytes calldata clientData,
+    bytes calldata clientChallenge,
+    uint256 clientChallengeOffset,
+    uint256 r,
+    uint256 s,
+    uint256 qx,
+    uint256 qy
+)
+    external
+    returns (bool);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="webauthn256r1"><a class="header" href="#webauthn256r1">WebAuthn256r1</a></h1>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/786aa3f50855be04284a783ca4f4eb44ed06c972/src/WebAuthn256r1.sol">Git Source</a></p>
+<p>A library to verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
+<h2 id="functions-1"><a class="header" href="#functions-1">Functions</a></h2>
 <h3 id="generatemessage"><a class="header" href="#generatemessage">generateMessage</a></h3>
 <p>Validate the webauthn data and generate the signature message needed to recover</p>
 <p><em>1. The signature counter is not checked in this implementation because
@@ -415,7 +433,7 @@ and until proven otherwise compliant with the level 3 of the specification.</em>
 <tr><td><code>message</code></td><td><code>bytes32</code></td><td>The signature message needed to recover</td></tr>
 </tbody></table>
 </div>
-<h3 id="verify"><a class="header" href="#verify">verify</a></h3>
+<h3 id="verify-1"><a class="header" href="#verify-1">verify</a></h3>
 <p>Verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
 <pre><code class="language-solidity">function verify(
     bytes1 authenticatorDataFlagMask,
