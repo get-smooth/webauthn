@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19 <0.9.0;
 
-import { WebAuthn256r1 } from "../src/WebAuthn256r1.sol";
+import { WebAuthn256r1 } from "src/WebAuthn256r1.sol";
+import { IWebAuthn256r1 } from "src/IWebAuthn256r1.sol";
 
 /// @title WebAuthnWrapper
 /// @notice This minimalist contract wraps the WebAuthn library for test/script purposes
-contract WebAuthnWrapper {
+contract WebAuthnWrapper is IWebAuthn256r1 {
     function _generateMessage(
         bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
