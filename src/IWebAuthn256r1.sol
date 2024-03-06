@@ -7,7 +7,6 @@ interface IWebAuthn256r1 {
         bytes calldata authenticatorData,
         bytes calldata clientData,
         bytes calldata clientChallenge,
-        uint256 clientChallengeOffset,
         uint256 r,
         uint256 s,
         uint256 qx,

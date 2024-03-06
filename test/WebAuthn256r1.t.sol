@@ -10,7 +10,6 @@ struct Fixtures {
     bytes authenticatorData;
     bytes clientData;
     bytes clientChallenge;
-    uint256 clientChallengeOffset;
 }
 
 contract ContractTestVerify is Test {
@@ -27,8 +26,7 @@ contract ContractTestVerify is Test {
             hex"65223a224e546f2d3161424547526e78786a6d6b61544865687972444e583369"
             hex"7a6c7169316f776d4f643955474a30222c226f726967696e223a226874747073"
             hex"3a2f2f66726573682e6c65646765722e636f6d222c2263726f73734f726967696e223a66616c73657d",
-        clientChallenge: hex"353a3ed5a0441919f1c639a46931de872ac3357de2ce5aa2d68c2639df54189d",
-        clientChallengeOffset: 0x24
+        clientChallenge: hex"353a3ed5a0441919f1c639a46931de872ac3357de2ce5aa2d68c2639df54189d"
     });
 
     function setUp() external {
@@ -40,8 +38,7 @@ contract ContractTestVerify is Test {
             validFixtures.authenticatorDataFlagMask,
             validFixtures.authenticatorData,
             validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            validFixtures.clientChallenge
         );
 
         assertEq(message, 0x4bfd0c06e1609b41d94e18b705de3163f6bf61fa44dcb8127c94bab7ba55fb9c);
@@ -54,11 +51,7 @@ contract ContractTestVerify is Test {
         validAuthenticatorData[32] = 0x01;
 
         implem._generateMessage(
-            MASK_ACCEPT_UP,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_UP, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
     }
 
@@ -73,11 +66,7 @@ contract ContractTestVerify is Test {
         validAuthenticatorData[32] = incorrectFlag;
 
         implem._generateMessage(
-            MASK_ACCEPT_UP,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_UP, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
     }
 
@@ -88,11 +77,7 @@ contract ContractTestVerify is Test {
         validAuthenticatorData[32] = 0x04;
 
         implem._generateMessage(
-            MASK_ACCEPT_UV,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_UV, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
     }
 
@@ -107,11 +92,7 @@ contract ContractTestVerify is Test {
         validAuthenticatorData[32] = incorrectFlag;
 
         implem._generateMessage(
-            MASK_ACCEPT_UV,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_UV, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
     }
 
@@ -122,22 +103,14 @@ contract ContractTestVerify is Test {
         validAuthenticatorData[32] = 0x01;
 
         implem._generateMessage(
-            MASK_ACCEPT_BOTH,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_BOTH, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
 
         // set the user validation flag in the valid authenticator data
         validAuthenticatorData[32] = 0x04;
 
         implem._generateMessage(
-            MASK_ACCEPT_BOTH,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_BOTH, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
     }
 
@@ -152,11 +125,7 @@ contract ContractTestVerify is Test {
         validAuthenticatorData[32] = incorrectFlag;
 
         implem._generateMessage(
-            MASK_ACCEPT_BOTH,
-            validAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            MASK_ACCEPT_BOTH, validAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge
         );
     }
 
@@ -168,8 +137,7 @@ contract ContractTestVerify is Test {
             MASK_ACCEPT_BOTH,
             abi.encodePacked(tooSmallAuthenticatorData),
             validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            validFixtures.clientChallenge
         );
     }
 
@@ -178,13 +146,7 @@ contract ContractTestVerify is Test {
             validFixtures.authenticatorData, validFixtures.authenticatorData, validFixtures.authenticatorData
         );
 
-        implem._generateMessage(
-            0x01,
-            bigAuthenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
-        );
+        implem._generateMessage(0x01, bigAuthenticatorData, validFixtures.clientData, validFixtures.clientChallenge);
     }
 
     function testFuzz_RevertWhen_ClientDataIncorrect(bytes calldata incorrectClientData) external {
@@ -199,8 +161,7 @@ contract ContractTestVerify is Test {
             validFixtures.authenticatorDataFlagMask,
             validFixtures.authenticatorData,
             incorrectClientData,
-            validFixtures.clientChallenge,
-            validFixtures.clientChallengeOffset
+            validFixtures.clientChallenge
         ) { } catch Error(string memory reason) {
             // This block catches failing revert() and require()
             // In our case, there is two possible valid revert reasons:
@@ -233,8 +194,7 @@ contract ContractTestVerify is Test {
             validFixtures.authenticatorDataFlagMask,
             validFixtures.authenticatorData,
             validFixtures.clientData,
-            incorrectClientChallenge,
-            validFixtures.clientChallengeOffset
+            incorrectClientChallenge
         ) { } catch Error(string memory reason) {
             // This block catches failing revert() and require()
             // In our case, there is two possible valid revert reasons:
@@ -261,43 +221,8 @@ contract ContractTestVerify is Test {
         vm.expectRevert(WebAuthn256r1.InvalidChallenge.selector);
 
         implem._generateMessage(
-            validFixtures.authenticatorDataFlagMask, validFixtures.authenticatorData, validFixtures.clientData, "", 0
+            validFixtures.authenticatorDataFlagMask, validFixtures.authenticatorData, validFixtures.clientData, ""
         );
-    }
-
-    function testFuzz_RevertWhen_ClientChallengeOffsetIncorrect(uint256 incorrectClientChallengeOffset) external {
-        // exclude valid data flag values from the fuzzing
-        vm.assume(incorrectClientChallengeOffset != validFixtures.clientChallengeOffset);
-
-        // tell the test runner to expect a revert in the next call
-        vm.expectRevert();
-
-        try implem._generateMessage(
-            validFixtures.authenticatorDataFlagMask,
-            validFixtures.authenticatorData,
-            validFixtures.clientData,
-            validFixtures.clientChallenge,
-            incorrectClientChallengeOffset
-        ) { } catch Error(string memory reason) {
-            // This block catches failing revert() and require()
-            // In our case, there is two possible valid revert reasons:
-            // 1.The calculus of the end index overflows meaning we try to access a chunk of memory
-            //   by passing an end index lower than the start index. In this case, the EVM revert without reason
-            // 2.The calculus of the end index doesn't overflow but the end index is incorrect to the challenge check.
-            //   In this case, the EVM revert with the selector (first 4-bytes of the signature) of our custom Error.
-
-            // Here we check the transaction reverted because of one of the two allowed scenarios
-            if (
-                bytes4(keccak256(bytes(reason))) != WebAuthn256r1.InvalidClientData.selector
-                    || keccak256(bytes(reason)) != keccak256("EvmError: Revert")
-            ) {
-                // If it's not the case, fail the test
-                fail("Unknown reverted error");
-            }
-        } catch {
-            // Fail the test if the transaction revert due to something else than revert() or require()
-            fail("Unknown reverted error");
-        }
     }
 
     function test_Verify() public {
@@ -314,8 +239,6 @@ contract ContractTestVerify is Test {
                 hex"3a2f2f66726573682e6c65646765722e636f6d222c2263726f73734f726967696e223a66616c73657d",
                 // clientChallenge
                 hex"353a3ed5a0441919f1c639a46931de872ac3357de2ce5aa2d68c2639df54189d",
-                // clientChallengeOffset
-                0x24,
                 // r
                 45_847_212_378_479_006_099_766_816_358_861_726_414_873_720_355_505_495_069_909_394_794_949_093_093_607,
                 // s

@@ -11,16 +11,13 @@ contract WebAuthnWrapper is IWebAuthn256r1 {
         bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
         bytes calldata clientData,
-        bytes calldata clientChallenge,
-        uint256 clientChallengeOffset
+        bytes calldata clientChallenge
     )
         external
         pure
         returns (bytes32)
     {
-        return WebAuthn256r1.generateMessage(
-            authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge, clientChallengeOffset
-        );
+        return WebAuthn256r1.generateMessage(authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge);
     }
 
     function verify(
@@ -28,7 +25,6 @@ contract WebAuthnWrapper is IWebAuthn256r1 {
         bytes calldata authenticatorData,
         bytes calldata clientData,
         bytes calldata clientChallenge,
-        uint256 clientChallengeOffset,
         uint256 r,
         uint256 s,
         uint256 qx,
@@ -38,15 +34,7 @@ contract WebAuthnWrapper is IWebAuthn256r1 {
         returns (bool)
     {
         return WebAuthn256r1.verify(
-            authenticatorDataFlagMask,
-            authenticatorData,
-            clientData,
-            clientChallenge,
-            clientChallengeOffset,
-            r,
-            s,
-            qx,
-            qy
+            authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge, r, s, qx, qy
         );
     }
 }

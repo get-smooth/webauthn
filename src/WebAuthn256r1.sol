@@ -12,6 +12,9 @@ library WebAuthn256r1 {
     error InvalidClientData();
     error InvalidChallenge();
 
+    // The offset of the client challenge in the client data. Constant as defined in the specification.
+    uint256 private constant CLIENT_CHALLENGE_OFFSET = 0x24;
+
     /// @notice Validate the webauthn data and generate the signature message needed to recover
     /// @param authenticatorDataFlagMask This is a bit mask that will be used to validate the flag in the
     ///                                  authenticator data. The flag is located at byte 32 of the authenticator
@@ -39,7 +42,6 @@ library WebAuthn256r1 {
     ///                        we use this field to pass the arbitrary execution order.
     ///                        This value is expected to not be encoded in Base64, the encoding is done
     ///                        during the verification.
-    /// @param clientChallengeOffset The offset of the client challenge in the client data
     /// @return message The signature message needed to recover
     /// @dev 1. The signature counter is not checked in this implementation because
     ///         we already have the nonce on-chain to prevent the anti-replay attack.
@@ -71,8 +73,7 @@ library WebAuthn256r1 {
         bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
         bytes calldata clientData,
-        bytes calldata clientChallenge,
-        uint256 clientChallengeOffset
+        bytes calldata clientChallenge
     )
         internal
         pure
@@ -94,10 +95,10 @@ library WebAuthn256r1 {
 
             // Extract the challenge from the client data and hash it
             // @dev: we don't need to check the overflow here as the EVM will automatically revert if
-            //       `clientChallengeOffset + challengeEncoded.length` overflow. This is because we will
+            //       `CLIENT_CHALLENGE_OFFSET + challengeEncoded.length` overflow. This is because we will
             //       try to access a chunk of memory by passing an end index lower than the start index
             bytes32 challengeHashed =
-                keccak256(clientData[clientChallengeOffset:(clientChallengeOffset + challengeEncoded.length)]);
+                keccak256(clientData[CLIENT_CHALLENGE_OFFSET:(CLIENT_CHALLENGE_OFFSET + challengeEncoded.length)]);
 
             // Hash the encoded challenge and check both challenges are equal
             if (keccak256(challengeEncoded) != challengeHashed) {
@@ -113,10 +114,9 @@ library WebAuthn256r1 {
     /// @notice Verify ECDSA signature though WebAuthn on the secp256r1 curve
     function verify(
         bytes1 authenticatorDataFlagMask,
-        bytes calldata authenticatorData,
+        bytes calldata authData,
         bytes calldata clientData,
         bytes calldata clientChallenge,
-        uint256 clientChallengeOffset,
         uint256 r,
         uint256 s,
         uint256 qx,
@@ -126,9 +126,7 @@ library WebAuthn256r1 {
         returns (bool)
     {
         unchecked {
-            bytes32 message = generateMessage(
-                authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge, clientChallengeOffset
-            );
+            bytes32 message = generateMessage(authenticatorDataFlagMask, authData, clientData, clientChallenge);
 
             return ECDSA256r1.verify(message, r, s, qx, qy);
         }
