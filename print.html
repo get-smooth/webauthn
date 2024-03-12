@@ -185,7 +185,7 @@
 <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/release-package.yml"><img src="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/release-package.yml/badge.svg" alt="Github Actions" /></a> <a href="https://book.getfoundry.sh/"><img src="https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg" alt="Foundry" /></a>
 <a href="./LICENSE.html"><img src="https://img.shields.io/badge/License-APACHE2-pink.svg" alt="License: MIT" /></a> <img src="https://img.shields.io/badge/Audited-No-red.svg" alt="Is it audited?" /></p>
 <h2 id="description"><a class="header" href="#description">Description</a></h2>
-<p><code>webauthn</code> is a library designed for signature validation through the Web Authentication process. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify">secp256r1 library</a>. Support for additional algorithms is planned for future releases.</p>
+<p><code>webauthn</code> is a library designed to validate passkeys. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the <a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify">secp256r1 library</a>. Support for additional algorithms is planned for future releases.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <h3 id="foundry"><a class="header" href="#foundry">Foundry</a></h3>
 <p>To install the <code>webauthn</code> package in a Foundry project, execute the following command:</p>
@@ -360,11 +360,10 @@ configured to use the Github Package Registry for our packages.</p>
 <p>Special thanks to <a href="https://github.com/btchip">btchip</a> for developing the reference implementation
 <a href="https://github.com/btchip/Webauthn.sol">here</a> and for the invaluable guidance through the WebAuthn specification.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="iwebauthn256r1"><a class="header" href="#iwebauthn256r1">IWebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/6007596147c262322506bf828cc1b9b118177c68/src/IWebAuthn256r1.sol">Git Source</a></p>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/ae92b28a3e00528b585c17f6ee5f9a68702ce5f9/src/IWebAuthn256r1.sol">Git Source</a></p>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
 <h3 id="verify"><a class="header" href="#verify">verify</a></h3>
 <pre><code class="language-solidity">function verify(
-    bytes1 authenticatorDataFlagMask,
     bytes calldata authenticatorData,
     bytes calldata clientData,
     bytes calldata clientChallenge,
@@ -377,9 +376,31 @@ configured to use the Github Package Registry for our packages.</p>
     returns (bool);
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="webauthn256r1"><a class="header" href="#webauthn256r1">WebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/6007596147c262322506bf828cc1b9b118177c68/src/WebAuthn256r1.sol">Git Source</a></p>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/ae92b28a3e00528b585c17f6ee5f9a68702ce5f9/src/WebAuthn256r1.sol">Git Source</a></p>
 <p>A library to verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
 <h2 id="state-variables"><a class="header" href="#state-variables">State Variables</a></h2>
+<h3 id="up_flag_mask"><a class="header" href="#up_flag_mask">UP_FLAG_MASK</a></h3>
+<p>Those are bit masks that can be used to validate the flag in the
+authenticator data. The flag is located at byte 32 of the authenticator
+data and is used to indicate, among other things, wheter the user's
+presence/verification ceremonies have been performed.
+This version of the library is opinionated for passkeys that enforce UV.
+Here are some flags you may want to use depending on your needs.</p>
+<ul>
+<li>0x01: User presence (UP) is required. If the UP flag is not set, revert</li>
+<li>0x04: User verification (UV) is required. If the UV flag is not set, revert</li>
+<li>0x05: UV and UP are both accepted. If none of them is set, revert
+Read more about UP here: https://www.w3.org/TR/webauthn-2/#test-of-user-presence
+Read more about UV here: https://www.w3.org/TR/webauthn-2/#user-verification</li>
+</ul>
+<pre><code class="language-solidity">bytes1 internal constant UP_FLAG_MASK = 0x01;
+</code></pre>
+<h3 id="uv_flag_mask"><a class="header" href="#uv_flag_mask">UV_FLAG_MASK</a></h3>
+<pre><code class="language-solidity">bytes1 internal constant UV_FLAG_MASK = 0x04;
+</code></pre>
+<h3 id="both_flag_mask"><a class="header" href="#both_flag_mask">BOTH_FLAG_MASK</a></h3>
+<pre><code class="language-solidity">bytes1 internal constant BOTH_FLAG_MASK = 0x05;
+</code></pre>
 <h3 id="client_challenge_offset"><a class="header" href="#client_challenge_offset">CLIENT_CHALLENGE_OFFSET</a></h3>
 <pre><code class="language-solidity">uint256 private constant CLIENT_CHALLENGE_OFFSET = 0x24;
 </code></pre>
@@ -412,7 +433,6 @@ recovery function.
 This contract is based on the level 2 of the WebAuthn specification.
 and until proven otherwise compliant with the level 3 of the specification.</em></p>
 <pre><code class="language-solidity">function generateMessage(
-    bytes1 authenticatorDataFlagMask,
     bytes calldata authenticatorData,
     bytes calldata clientData,
     bytes calldata clientChallenge
@@ -423,7 +443,6 @@ and until proven otherwise compliant with the level 3 of the specification.</em>
 </code></pre>
 <p><strong>Parameters</strong></p>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>authenticatorDataFlagMask</code></td><td><code>bytes1</code></td><td>This is a bit mask that will be used to validate the flag in the authenticator data. The flag is located at byte 32 of the authenticator data and is used to indicate, among other things, wheter the user's presence/verification ceremonies have been performed. This argument is not expected to be exposed to the end user, it is the responsibility of the caller to enforce the value of the flag for their flows. Here are some flags you may want to use depending on your needs. - 0x01: User presence (UP) is required. If the UP flag is not set, revert - 0x04: User verification (UV) is required. If the UV flag is not set, revert - 0x05: UV and UP are both accepted. If none of them is set, revert</td></tr>
 <tr><td><code>authenticatorData</code></td><td><code>bytes</code></td><td>The authenticator data structure encodes contextual bindings made by the authenticator. Described here: https://www.w3.org/TR/webauthn-2/#authenticator-data</td></tr>
 <tr><td><code>clientData</code></td><td><code>bytes</code></td><td>This is the client data that was signed. The client data represents the contextual bindings of both the WebAuthn Relying Party and the client. Described here: https://www.w3.org/TR/webauthn-2/#client-data</td></tr>
 <tr><td><code>clientChallenge</code></td><td><code>bytes</code></td><td>This is the challenge that was sent to the client to sign. It is part of the client data. In a classic non-EVM flow, this challenge is generated by the server and sent to the client to avoid replay attack. In our context, as we already have the nonce for this purpose we use this field to pass the arbitrary execution order. This value is expected to not be encoded in Base64, the encoding is done during the verification.</td></tr>
@@ -437,7 +456,6 @@ and until proven otherwise compliant with the level 3 of the specification.</em>
 <h3 id="verify-1"><a class="header" href="#verify-1">verify</a></h3>
 <p>Verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
 <pre><code class="language-solidity">function verify(
-    bytes1 authenticatorDataFlagMask,
     bytes calldata authData,
     bytes calldata clientData,
     bytes calldata clientChallenge,
