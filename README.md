@@ -25,7 +25,7 @@
 
 ## Description
 
-`webauthn` is a library designed for signature validation through the Web Authentication process. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify). Support for additional algorithms is planned for future releases.
+`webauthn` is a library designed to validate passkeys. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify). Support for additional algorithms is planned for future releases.
 
 ## Installation
 

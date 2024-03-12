@@ -3,7 +3,6 @@ pragma solidity >=0.8.19 <0.9.0;
 
 interface IWebAuthn256r1 {
     function verify(
-        bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
         bytes calldata clientData,
         bytes calldata clientChallenge,

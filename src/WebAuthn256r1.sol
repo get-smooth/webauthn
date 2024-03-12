@@ -8,6 +8,23 @@ import { Base64 } from "../lib/solady/src/utils/Base64.sol";
 /// @notice A library to verify ECDSA signature though WebAuthn on the secp256r1 curve
 /// @custom:experimental This is an experimental library.
 library WebAuthn256r1 {
+    /// Those are bit masks that can be used to validate the flag in the
+    /// authenticator data. The flag is located at byte 32 of the authenticator
+    /// data and is used to indicate, among other things, wheter the user's
+    /// presence/verification ceremonies have been performed.
+    /// This version of the library is opinionated for passkeys that enforce UV.
+    ///
+    /// Here are some flags you may want to use depending on your needs.
+    /// - 0x01: User presence (UP) is required. If the UP flag is not set, revert
+    /// - 0x04: User verification (UV) is required. If the UV flag is not set, revert
+    /// - 0x05: UV and UP are both accepted. If none of them is set, revert
+    ///
+    /// Read more about UP here: https://www.w3.org/TR/webauthn-2/#test-of-user-presence
+    /// Read more about UV here: https://www.w3.org/TR/webauthn-2/#user-verification
+    bytes1 internal constant UP_FLAG_MASK = 0x01;
+    bytes1 internal constant UV_FLAG_MASK = 0x04;
+    bytes1 internal constant BOTH_FLAG_MASK = 0x05;
+
     error InvalidAuthenticatorData();
     error InvalidClientData();
     error InvalidChallenge();
@@ -16,20 +33,6 @@ library WebAuthn256r1 {
     uint256 private constant CLIENT_CHALLENGE_OFFSET = 0x24;
 
     /// @notice Validate the webauthn data and generate the signature message needed to recover
-    /// @param authenticatorDataFlagMask This is a bit mask that will be used to validate the flag in the
-    ///                                  authenticator data. The flag is located at byte 32 of the authenticator
-    ///                                  data and is used to indicate, among other things, wheter the user's
-    ///                                  presence/verification ceremonies have been performed.
-    ///                                  This argument is not expected to be exposed to the end user, it is the
-    ///                                  responsibility of the caller to enforce the value of the flag for their flows.
-    ///
-    ///                                  Here are some flags you may want to use depending on your needs.
-    ///                                  - 0x01: User presence (UP) is required. If the UP flag is not set, revert
-    ///                                  - 0x04: User verification (UV) is required. If the UV flag is not set, revert
-    ///                                  - 0x05: UV and UP are both accepted. If none of them is set, revert
-    ///
-    //                                  Read more about UP here: https://www.w3.org/TR/webauthn-2/#test-of-user-presence
-    //                                  Read more about UV here: https://www.w3.org/TR/webauthn-2/#user-verification
     /// @param authenticatorData The authenticator data structure encodes contextual bindings made by the authenticator.
     ///                          Described here: https://www.w3.org/TR/webauthn-2/#authenticator-data
     /// @param clientData      This is the client data that was signed. The client data represents the
@@ -70,7 +73,6 @@ library WebAuthn256r1 {
     ///         This contract is based on the level 2 of the WebAuthn specification.
     ///         and until proven otherwise compliant with the level 3 of the specification.
     function generateMessage(
-        bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
         bytes calldata clientData,
         bytes calldata clientChallenge
@@ -83,7 +85,7 @@ library WebAuthn256r1 {
             // Let the caller check the value of the flag in the authenticator data
             // @dev: we don't need to manually check the length of the authenticator data
             //       here as the EVM will automatically revert if the length is lower than 32
-            if ((authenticatorData[32] & authenticatorDataFlagMask) == 0) {
+            if ((authenticatorData[32] & UV_FLAG_MASK) == 0) {
                 revert InvalidAuthenticatorData();
             }
 
@@ -113,7 +115,6 @@ library WebAuthn256r1 {
 
     /// @notice Verify ECDSA signature though WebAuthn on the secp256r1 curve
     function verify(
-        bytes1 authenticatorDataFlagMask,
         bytes calldata authData,
         bytes calldata clientData,
         bytes calldata clientChallenge,
@@ -126,7 +127,7 @@ library WebAuthn256r1 {
         returns (bool)
     {
         unchecked {
-            bytes32 message = generateMessage(authenticatorDataFlagMask, authData, clientData, clientChallenge);
+            bytes32 message = generateMessage(authData, clientData, clientChallenge);
 
             return ECDSA256r1.verify(message, r, s, qx, qy);
         }

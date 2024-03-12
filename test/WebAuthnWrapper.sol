@@ -8,7 +8,6 @@ import { IWebAuthn256r1 } from "src/IWebAuthn256r1.sol";
 /// @notice This minimalist contract wraps the WebAuthn library for test/script purposes
 contract WebAuthnWrapper is IWebAuthn256r1 {
     function _generateMessage(
-        bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
         bytes calldata clientData,
         bytes calldata clientChallenge
@@ -17,11 +16,10 @@ contract WebAuthnWrapper is IWebAuthn256r1 {
         pure
         returns (bytes32)
     {
-        return WebAuthn256r1.generateMessage(authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge);
+        return WebAuthn256r1.generateMessage(authenticatorData, clientData, clientChallenge);
     }
 
     function verify(
-        bytes1 authenticatorDataFlagMask,
         bytes calldata authenticatorData,
         bytes calldata clientData,
         bytes calldata clientChallenge,
@@ -33,8 +31,6 @@ contract WebAuthnWrapper is IWebAuthn256r1 {
         external
         returns (bool)
     {
-        return WebAuthn256r1.verify(
-            authenticatorDataFlagMask, authenticatorData, clientData, clientChallenge, r, s, qx, qy
-        );
+        return WebAuthn256r1.verify(authenticatorData, clientData, clientChallenge, r, s, qx, qy);
     }
 }
