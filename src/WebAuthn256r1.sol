@@ -3,34 +3,15 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ECDSA256r1 } from "../lib/secp256r1-verify/src/ECDSA256r1.sol";
 import { Base64 } from "../lib/solady/src/utils/Base64.sol";
+import { UV_FLAG_MASK, OFFSET_CLIENT_CHALLENGE, OFFSET_FLAG } from "src/utils.sol";
 
 /// @title WebAuthn256r1
 /// @notice A library to verify ECDSA signature though WebAuthn on the secp256r1 curve
 /// @custom:experimental This is an experimental library.
 library WebAuthn256r1 {
-    /// Those are bit masks that can be used to validate the flag in the
-    /// authenticator data. The flag is located at byte 32 of the authenticator
-    /// data and is used to indicate, among other things, wheter the user's
-    /// presence/verification ceremonies have been performed.
-    /// This version of the library is opinionated for passkeys that enforce UV.
-    ///
-    /// Here are some flags you may want to use depending on your needs.
-    /// - 0x01: User presence (UP) is required. If the UP flag is not set, revert
-    /// - 0x04: User verification (UV) is required. If the UV flag is not set, revert
-    /// - 0x05: UV and UP are both accepted. If none of them is set, revert
-    ///
-    /// Read more about UP here: https://www.w3.org/TR/webauthn-2/#test-of-user-presence
-    /// Read more about UV here: https://www.w3.org/TR/webauthn-2/#user-verification
-    bytes1 internal constant UP_FLAG_MASK = 0x01;
-    bytes1 internal constant UV_FLAG_MASK = 0x04;
-    bytes1 internal constant BOTH_FLAG_MASK = 0x05;
-
     error InvalidAuthenticatorData();
     error InvalidClientData();
     error InvalidChallenge();
-
-    // The offset of the client challenge in the client data. Constant as defined in the specification.
-    uint256 private constant CLIENT_CHALLENGE_OFFSET = 0x24;
 
     /// @notice Validate the webauthn data and generate the signature message needed to recover
     /// @param authenticatorData The authenticator data structure encodes contextual bindings made by the authenticator.
@@ -85,7 +66,7 @@ library WebAuthn256r1 {
             // Let the caller check the value of the flag in the authenticator data
             // @dev: we don't need to manually check the length of the authenticator data
             //       here as the EVM will automatically revert if the length is lower than 32
-            if ((authenticatorData[32] & UV_FLAG_MASK) == 0) {
+            if ((authenticatorData[OFFSET_FLAG] & UV_FLAG_MASK) == 0) {
                 revert InvalidAuthenticatorData();
             }
 
@@ -97,10 +78,10 @@ library WebAuthn256r1 {
 
             // Extract the challenge from the client data and hash it
             // @dev: we don't need to check the overflow here as the EVM will automatically revert if
-            //       `CLIENT_CHALLENGE_OFFSET + challengeEncoded.length` overflow. This is because we will
+            //       `OFFSET_CLIENT_CHALLENGE + challengeEncoded.length` overflow. This is because we will
             //       try to access a chunk of memory by passing an end index lower than the start index
             bytes32 challengeHashed =
-                keccak256(clientData[CLIENT_CHALLENGE_OFFSET:(CLIENT_CHALLENGE_OFFSET + challengeEncoded.length)]);
+                keccak256(clientData[OFFSET_CLIENT_CHALLENGE:(OFFSET_CLIENT_CHALLENGE + challengeEncoded.length)]);
 
             // Hash the encoded challenge and check both challenges are equal
             if (keccak256(challengeEncoded) != challengeHashed) {
