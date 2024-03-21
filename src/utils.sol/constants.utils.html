@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>IWebAuthn256r1</title>
+        <title>utils constants</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item expanded "><a href="../../src/IWebAuthn256r1.sol/interface.IWebAuthn256r1.html" class="active">IWebAuthn256r1</a></li><li class="chapter-item "><a href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html">WebAuthn256r1</a></li><li class="chapter-item "><a href="../../src/utils.sol/constants.utils.html">utils constants</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="../../src/IWebAuthn256r1.sol/interface.IWebAuthn256r1.html">IWebAuthn256r1</a></li><li class="chapter-item "><a href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html">WebAuthn256r1</a></li><li class="chapter-item expanded "><a href="../../src/utils.sol/constants.utils.html" class="active">utils constants</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -177,34 +177,44 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="iwebauthn256r1"><a class="header" href="#iwebauthn256r1">IWebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/8590224fd9c32a94a32182534f8c723e80e260fd/src/IWebAuthn256r1.sol">Git Source</a></p>
-<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
-<h3 id="verify"><a class="header" href="#verify">verify</a></h3>
-<pre><code class="language-solidity">function verify(
-    bytes calldata authenticatorData,
-    bytes calldata clientData,
-    bytes calldata clientChallenge,
-    uint256 r,
-    uint256 s,
-    uint256 qx,
-    uint256 qy
-)
-    external
-    returns (bool);
+                        <h1 id="constants"><a class="header" href="#constants">Constants</a></h1>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/8590224fd9c32a94a32182534f8c723e80e260fd/src/utils.sol">Git Source</a></p>
+<h3 id="up_flag_mask"><a class="header" href="#up_flag_mask">UP_FLAG_MASK</a></h3>
+<pre><code class="language-solidity">bytes1 constant UP_FLAG_MASK = 0x01;
+</code></pre>
+<h3 id="uv_flag_mask"><a class="header" href="#uv_flag_mask">UV_FLAG_MASK</a></h3>
+<pre><code class="language-solidity">bytes1 constant UV_FLAG_MASK = 0x04;
+</code></pre>
+<h3 id="both_flag_mask"><a class="header" href="#both_flag_mask">BOTH_FLAG_MASK</a></h3>
+<pre><code class="language-solidity">bytes1 constant BOTH_FLAG_MASK = 0x05;
+</code></pre>
+<h3 id="offset_client_challenge"><a class="header" href="#offset_client_challenge">OFFSET_CLIENT_CHALLENGE</a></h3>
+<pre><code class="language-solidity">uint256 constant OFFSET_CLIENT_CHALLENGE = 0x24;
+</code></pre>
+<h3 id="offset_credid_length"><a class="header" href="#offset_credid_length">OFFSET_CREDID_LENGTH</a></h3>
+<pre><code class="language-solidity">uint256 constant OFFSET_CREDID_LENGTH = 0x35;
+</code></pre>
+<h3 id="credid_length_length"><a class="header" href="#credid_length_length">CREDID_LENGTH_LENGTH</a></h3>
+<pre><code class="language-solidity">uint256 constant CREDID_LENGTH_LENGTH = 0x02;
+</code></pre>
+<h3 id="offset_credid"><a class="header" href="#offset_credid">OFFSET_CREDID</a></h3>
+<pre><code class="language-solidity">uint256 constant OFFSET_CREDID = 0x37;
+</code></pre>
+<h3 id="offset_flag"><a class="header" href="#offset_flag">OFFSET_FLAG</a></h3>
+<pre><code class="language-solidity">uint256 constant OFFSET_FLAG = 0x20;
+</code></pre>
+<h3 id="p256r1_pubkey_coord_length"><a class="header" href="#p256r1_pubkey_coord_length">P256R1_PUBKEY_COORD_LENGTH</a></h3>
+<pre><code class="language-solidity">uint256 constant P256R1_PUBKEY_COORD_LENGTH = 0x20;
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -212,13 +222,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

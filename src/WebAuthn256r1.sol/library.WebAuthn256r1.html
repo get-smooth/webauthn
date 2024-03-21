@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="../../src/IWebAuthn256r1.sol/interface.IWebAuthn256r1.html">IWebAuthn256r1</a></li><li class="chapter-item expanded "><a href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="active">WebAuthn256r1</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">Home</a></li><li class="chapter-item affix "><li class="part-title">src</li><li class="chapter-item "><a href="../../src/IWebAuthn256r1.sol/interface.IWebAuthn256r1.html">IWebAuthn256r1</a></li><li class="chapter-item expanded "><a href="../../src/WebAuthn256r1.sol/library.WebAuthn256r1.html" class="active">WebAuthn256r1</a></li><li class="chapter-item "><a href="../../src/utils.sol/constants.utils.html">utils constants</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -178,34 +178,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="webauthn256r1"><a class="header" href="#webauthn256r1">WebAuthn256r1</a></h1>
-<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/ae92b28a3e00528b585c17f6ee5f9a68702ce5f9/src/WebAuthn256r1.sol">Git Source</a></p>
+<p><a href="https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/blob/8590224fd9c32a94a32182534f8c723e80e260fd/src/WebAuthn256r1.sol">Git Source</a></p>
 <p>A library to verify ECDSA signature though WebAuthn on the secp256r1 curve</p>
-<h2 id="state-variables"><a class="header" href="#state-variables">State Variables</a></h2>
-<h3 id="up_flag_mask"><a class="header" href="#up_flag_mask">UP_FLAG_MASK</a></h3>
-<p>Those are bit masks that can be used to validate the flag in the
-authenticator data. The flag is located at byte 32 of the authenticator
-data and is used to indicate, among other things, wheter the user's
-presence/verification ceremonies have been performed.
-This version of the library is opinionated for passkeys that enforce UV.
-Here are some flags you may want to use depending on your needs.</p>
-<ul>
-<li>0x01: User presence (UP) is required. If the UP flag is not set, revert</li>
-<li>0x04: User verification (UV) is required. If the UV flag is not set, revert</li>
-<li>0x05: UV and UP are both accepted. If none of them is set, revert
-Read more about UP here: https://www.w3.org/TR/webauthn-2/#test-of-user-presence
-Read more about UV here: https://www.w3.org/TR/webauthn-2/#user-verification</li>
-</ul>
-<pre><code class="language-solidity">bytes1 internal constant UP_FLAG_MASK = 0x01;
-</code></pre>
-<h3 id="uv_flag_mask"><a class="header" href="#uv_flag_mask">UV_FLAG_MASK</a></h3>
-<pre><code class="language-solidity">bytes1 internal constant UV_FLAG_MASK = 0x04;
-</code></pre>
-<h3 id="both_flag_mask"><a class="header" href="#both_flag_mask">BOTH_FLAG_MASK</a></h3>
-<pre><code class="language-solidity">bytes1 internal constant BOTH_FLAG_MASK = 0x05;
-</code></pre>
-<h3 id="client_challenge_offset"><a class="header" href="#client_challenge_offset">CLIENT_CHALLENGE_OFFSET</a></h3>
-<pre><code class="language-solidity">uint256 private constant CLIENT_CHALLENGE_OFFSET = 0x24;
-</code></pre>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
 <h3 id="generatemessage"><a class="header" href="#generatemessage">generateMessage</a></h3>
 <p>Validate the webauthn data and generate the signature message needed to recover</p>
@@ -288,6 +262,9 @@ and until proven otherwise compliant with the level 3 of the specification.</em>
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="../../src/utils.sol/constants.utils.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -299,6 +276,9 @@ and until proven otherwise compliant with the level 3 of the specification.</em>
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="../../src/utils.sol/constants.utils.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
