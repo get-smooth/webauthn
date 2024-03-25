@@ -18,8 +18,26 @@ bytes1 constant UP_FLAG_MASK = 0x01;
 bytes1 constant UV_FLAG_MASK = 0x04;
 bytes1 constant BOTH_FLAG_MASK = 0x05;
 
-// The offset of the client challenge in the client data
-uint256 constant OFFSET_CLIENT_CHALLENGE = 0x24;
+// The challenge is stored in the client data field of the WebAuthn response.
+// The client data is a JSON object that contains a type, the challenge and the origin.
+// For passkeys, the type is always "webauthn.get" or "webauthn.create".
+// Ex: `{"type":"webauthn.create","challenge":<challenge>,"origin":"<origin>"}`
+// Ex: `{"type":"webauthn.get","challenge":<challenge>,"origin":"<origin>"}`
+//
+// The client data always starts with a constant value which is the same for both
+// the get and create flows. This constant value correspond to the beginning of
+// the JSON object which is: `{"type":"webauthn.`. The next byte allow to distinguish
+// between the get and create flows. It is either `g` (0x67) for get or `c` (0x63) for create.
+// The three constants located below can be used to know if a WebAuthn response is a get or create flow.
+uint256 constant OFFSET_CLIENT_TYPE = 0x12;
+bytes1 constant TYPE_GET_INDICATOR = 0x67;
+bytes1 constant TYPE_CREATE_INDICATOR = 0x63;
+// The offset of the client challenge for the get flow
+// Correspond to the constant value `{"type":"webauthn.get","challenge":`
+uint256 constant OFFSET_CLIENT_CHALLENGE_GET = 0x24;
+// The offset of the client challenge for the create flow
+// Correspond to the constant value `{"type":"webauthn.create","challenge":`
+uint256 constant OFFSET_CLIENT_CHALLENGE_CREATE = 0x27;
 // The offset where the credential ID length starts and its length
 uint256 constant OFFSET_CREDID_LENGTH = 0x35; // 53
 uint256 constant CREDID_LENGTH_LENGTH = 0x02;
@@ -27,5 +45,5 @@ uint256 constant CREDID_LENGTH_LENGTH = 0x02;
 uint256 constant OFFSET_CREDID = 0x37; // 55
 // The offset of the flag mask
 uint256 constant OFFSET_FLAG = 0x20; // 32
-
+// The length of the public key coordinates
 uint256 constant P256R1_PUBKEY_COORD_LENGTH = 0x20; // 32

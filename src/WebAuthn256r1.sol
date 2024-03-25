@@ -3,7 +3,15 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ECDSA256r1 } from "../lib/secp256r1-verify/src/ECDSA256r1.sol";
 import { Base64 } from "../lib/solady/src/utils/Base64.sol";
-import { UV_FLAG_MASK, OFFSET_CLIENT_CHALLENGE, OFFSET_FLAG } from "src/utils.sol";
+import {
+    UV_FLAG_MASK,
+    OFFSET_CLIENT_CHALLENGE_GET,
+    OFFSET_CLIENT_CHALLENGE_CREATE,
+    OFFSET_FLAG,
+    OFFSET_CLIENT_TYPE,
+    TYPE_GET_INDICATOR,
+    TYPE_CREATE_INDICATOR
+} from "src/utils.sol";
 
 /// @title WebAuthn256r1
 /// @notice A library to verify ECDSA signature though WebAuthn on the secp256r1 curve
@@ -76,12 +84,20 @@ library WebAuthn256r1 {
             // Encode the client challenge in base64 and explicitly convert it to bytes
             bytes memory challengeEncoded = bytes(Base64.encode(clientChallenge, true, true));
 
+            // Extract the client challenge offset based on the client type
+            // By checking the indicator we can determine if we need to use the offset for the get or create flow
+            // @dev: we don't need to check the overflow here as the EVM will automatically revert if
+            //       `OFFSET_CLIENT_TYPE` is out of bound.
+            uint256 clientChallengeOffset = clientData[OFFSET_CLIENT_TYPE] == TYPE_CREATE_INDICATOR
+                ? OFFSET_CLIENT_CHALLENGE_CREATE
+                : OFFSET_CLIENT_CHALLENGE_GET;
+
             // Extract the challenge from the client data and hash it
             // @dev: we don't need to check the overflow here as the EVM will automatically revert if
-            //       `OFFSET_CLIENT_CHALLENGE + challengeEncoded.length` overflow. This is because we will
+            //       `clientChallengeOffset + challengeEncoded.length` overflow. This is because we will
             //       try to access a chunk of memory by passing an end index lower than the start index
             bytes32 challengeHashed =
-                keccak256(clientData[OFFSET_CLIENT_CHALLENGE:(OFFSET_CLIENT_CHALLENGE + challengeEncoded.length)]);
+                keccak256(clientData[clientChallengeOffset:(clientChallengeOffset + challengeEncoded.length)]);
 
             // Hash the encoded challenge and check both challenges are equal
             if (keccak256(challengeEncoded) != challengeHashed) {
