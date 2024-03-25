@@ -24,6 +24,7 @@
     "solady/=lib/solady/src/",
     "secp256r1-verify=lib/secp256r1-verify/src/",
   ]
+  fs_permissions = [{ access = "read", path = "./test/fixtures/fixtures.create.json"}]
 
 [profile.ci]
   fuzz = { runs = 10_000 }
@@ -49,6 +50,7 @@
   quote_style = "double"
   tab_width = 4
   wrap_comments = true
+  ignore = ["./test/fixtures/fixtures.create.json"]
 
 [rpc_endpoints]
   arbitrum_one = "https://arbitrum-mainnet.infura.io/v3/${API_KEY_INFURA}"

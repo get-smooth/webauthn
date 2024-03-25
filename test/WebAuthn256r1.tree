@@ -4,5 +4,5 @@ WebAuthn256r1Test
 ├── it revert when client data incorrect
 ├── it revert when only UP is set
 ├── it revert when challenge incorrect
-├── it revert when challenge is null
-└── it verify a valid webauthn payload correctly
+└── it revert when challenge is null
+
