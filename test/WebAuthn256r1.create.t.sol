@@ -46,49 +46,27 @@ contract WebAuthn256r1Test__Create is Test {
 
         // load a random credential from the JSON file
         string memory fixturesId = string.concat(".data[", vm.toString(identifier), "]");
-        emit log_named_string("fixturesId", fixturesId);
 
-        {
-            // load the clientDataJSON
-            bytes memory credentialsResponseEncoded =
-                json.parseRaw(string.concat(fixturesId, ".response.clientDataJSON"));
-            clientDataJSON = abi.decode(credentialsResponseEncoded, (bytes));
-        }
+        // load the clientDataJSON
+        clientDataJSON = json.readBytes(string.concat(fixturesId, ".response.clientDataJSON"));
 
-        {
-            // load the client challenge from the client data JSON
-            bytes memory challengeEncoded =
-                json.parseRaw(string.concat(fixturesId, ".responseDecoded.ClientDataJSON.challenge"));
-            challenge = abi.decode(challengeEncoded, (bytes));
-        }
+        // load the client challenge from the client data JSON
+        challenge = json.readBytes(string.concat(fixturesId, ".responseDecoded.ClientDataJSON.challenge"));
 
-        {
-            // load the auth data from the client data JSON
-            bytes memory authDataEncoded = json.parseRaw(string.concat(fixturesId, ".response.authData"));
-            authData = abi.decode(authDataEncoded, (bytes));
-        }
+        // load the auth data from the client data JSON
+        authData = json.readBytes(string.concat(fixturesId, ".response.authData"));
 
-        {
-            // load qx
-            qx = json.readUint(string.concat(fixturesId, ".responseDecoded.AttestationObject.authData.pubKeyX"));
-        }
+        // load qx
+        qx = json.readUint(string.concat(fixturesId, ".responseDecoded.AttestationObject.authData.pubKeyX"));
 
-        {
-            // load qy
-            qy = json.readUint(string.concat(fixturesId, ".responseDecoded.AttestationObject.authData.pubKeyY"));
-        }
+        // load qy
+        qy = json.readUint(string.concat(fixturesId, ".responseDecoded.AttestationObject.authData.pubKeyY"));
 
-        {
-            // load R
-            string memory key = ".responseDecoded.AttestationObject.attStmt.r";
-            r = json.readUint(string.concat(fixturesId, key));
-        }
+        // load R
+        r = json.readUint(string.concat(fixturesId, ".responseDecoded.AttestationObject.attStmt.r"));
 
-        {
-            // load S
-            string memory key = ".responseDecoded.AttestationObject.attStmt.s";
-            s = json.readUint(string.concat(fixturesId, key));
-        }
+        // load S
+        s = json.readUint(string.concat(fixturesId, ".responseDecoded.AttestationObject.attStmt.s"));
 
         assertTrue(implem.verify(authData, clientDataJSON, challenge, r, s, qx, qy));
     }
