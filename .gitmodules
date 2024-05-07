@@ -8,7 +8,7 @@
   url = git@github.com:PaulRBerg/prb-test.git
 [submodule "lib/secp256r1-verify"]
 	path = lib/secp256r1-verify
-	url = git@github.com:0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify.git
+	url = git@github.com:get-smooth/secp256r1-verify.git
 [submodule "lib/solady"]
 	path = lib/solady
 	url = git@github.com:vectorized/solady.git

@@ -8,17 +8,17 @@
 [![Github Actions][gha-release-badge]][gha-release-url] [![Foundry][foundry-badge]][foundry]
 [![License: MIT][license-badge]][license] ![Is it audited?][audit]
 
-[github-editor-url]: https://github.dev/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/tree/main
+[github-editor-url]: https://github.dev/get-smooth/webauthn/tree/main
 [github-editor-badge]: https://img.shields.io/badge/Github-Open%20the%20Editor-purple?logo=github
-[gha-quality-url]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/quality-checks.yml
-[gha-quality-badge]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/quality-checks.yml/badge.svg?branch=main
-[gha-test-url]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/tests.yml
-[gha-test-badge]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/tests.yml/badge.svg?branch=main
-[gha-static-analysis-url]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/static-analysis.yml
+[gha-quality-url]: https://github.com/get-smooth/webauthn/actions/workflows/quality-checks.yml
+[gha-quality-badge]: https://github.com/get-smooth/webauthn/actions/workflows/quality-checks.yml/badge.svg?branch=main
+[gha-test-url]: https://github.com/get-smooth/webauthn/actions/workflows/tests.yml
+[gha-test-badge]: https://github.com/get-smooth/webauthn/actions/workflows/tests.yml/badge.svg?branch=main
+[gha-static-analysis-url]: https://github.com/get-smooth/webauthn/actions/workflows/static-analysis.yml
 [gha-static-analysis-badge]:
-  https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/template-foundry/actions/workflows/static-analysis.yml/badge.svg?branch=main
-[gha-release-url]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/release-package.yml
-[gha-release-badge]: https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/actions/workflows/release-package.yml/badge.svg
+  https://github.com/get-smooth/template-foundry/actions/workflows/static-analysis.yml/badge.svg?branch=main
+[gha-release-url]: https://github.com/get-smooth/webauthn/actions/workflows/release-package.yml
+[gha-release-badge]: https://github.com/get-smooth/webauthn/actions/workflows/release-package.yml/badge.svg
 [foundry]: https://book.getfoundry.sh/
 [foundry-badge]: https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg
 [license]: ./LICENSE.md
@@ -27,7 +27,7 @@
 
 ## Description
 
-`webauthn` is a library designed to validate passkeys. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify). Support for additional algorithms is planned for future releases.
+`webauthn` is a library designed to validate passkeys. Currently, it supports only the ECDSA signature scheme utilizing the secp256r1 curve. This functionality is provided by the [secp256r1 library](https://github.com/get-smooth/secp256r1-verify). Support for additional algorithms is planned for future releases.
 
 ## Installation
 
@@ -36,7 +36,7 @@
 To install the `webauthn` package in a Foundry project, execute the following command:
 
 ```sh
-forge install https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn
+forge install https://github.com/get-smooth/webauthn
 ```
 
 This command will install the latest version of the package in your lib directory. To install a specific version of the
@@ -48,7 +48,7 @@ library, follow the instructions in the
 To install the `webauthn` package in a Hardhat or Truffle project, use `npm` to run the following command:
 
 ```sh
-npm install @0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn
+npm install @smoo.th/webauthn
 ```
 
 After the installation, import the package into your project and use it to validate a Web Authentication signature.
@@ -60,7 +60,7 @@ After the installation, import the package into your project and use it to valid
 
 ## Usage
 
-This repository supports the verification of Web Authentication signatures using the ECDSA signature scheme with the secp256r1 curve. The non-experimental implementations from the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify) are all supported. After you've integrated this library into your project, you can freely import and use the implementation that best suits your specific use cases and requirements. Let's take a more detailed look at each one.
+This repository supports the verification of Web Authentication signatures using the ECDSA signature scheme with the secp256r1 curve. The non-experimental implementations from the [secp256r1 library](https://github.com/get-smooth/secp256r1-verify) are all supported. After you've integrated this library into your project, you can freely import and use the implementation that best suits your specific use cases and requirements. Let's take a more detailed look at each one.
 
 > 🚨 None of the implementations have been audited. DO NOT USE THEM IN PRODUCTION.
 ### Scripts
@@ -71,7 +71,7 @@ scripts are expected to be run using the `forge script` command.
 
 ## Gas reports
 
-This gas report was produced using the `0.8.19` version of the Solidity compiler (with 100k optimizer runs), specifically for the [`0.3.0`](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/releases/tag/v0.3.0) version of the library.
+This gas report was produced using the `0.8.19` version of the Solidity compiler (with 100k optimizer runs), specifically for the [`0.3.0`](https://github.com/get-smooth/webauthn/releases/tag/v0.3.0) version of the library.
 
 | test/WebAuthnWrapper.sol:WebAuthnWrapper contract |                 |        |        |        |         |
 |---------------------------------------------------|-----------------|--------|--------|--------|---------|
@@ -81,7 +81,7 @@ This gas report was produced using the `0.8.19` version of the Solidity compiler
 | _generateMessage                                  | 5230            | 5261   | 5230   | 5421   | 6       |
 | verify                                            | 209257          | 209257 | 209257 | 209257 | 1       |
 
-These costs can be considered end-to-end as they include the cost of the [secp256r1 library](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-verify).
+These costs can be considered end-to-end as they include the cost of the [secp256r1 library](https://github.com/get-smooth/secp256r1-verify).
 Note the library is wrapped in a contract that exposes the different functions of the library, impacting the gas cost of the benchmark.
 
 > ℹ️ Tests expected to revert are excluded from the gas report
@@ -203,7 +203,7 @@ The tests use one cheat code` you should be aware of:
   calculates 256 points on the secp256r1 elliptic curve from a public key. This is required for the variants that need
   these points to be deployed on-chain. Therefore, even if it's not explicit, every time you run the test suite, a
   Node.js script is executed at least one time. You can learn more about the library we use
-  [here](https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-computation).
+  [here](https://github.com/get-smooth/secp256r1-computation).
 
 > 📖 Cheatcodes are special instructions exposed by Foundry to enhance the developer experience. Learn more about them
 > [here](https://book.getfoundry.sh/cheatcodes/).
@@ -233,10 +233,10 @@ make quality # run both
 You need to configure npm to use the Github registry. You can do so using the following command in your terminal:
 
 ```sh
-npm config set @0x90d2b2b7fb7599eebb6e7a32980857d8:registry=https://npm.pkg.github.com
+npm config set @smoo.th:registry=https://npm.pkg.github.com
 ```
 
-This will instruct npm to use the Github registry for packages deployed by `@0x90d2b2b7fb7599eebb6e7a32980857d8`.
+This will instruct npm to use the Github registry for packages deployed by `@smoo.th`.
 
 Once the Github registry is configured, you have to create a **classic** token on Github. To do so, go to your
 [Github settings](https://github.com/settings/tokens). The token must have the read:packages scope. Once you have

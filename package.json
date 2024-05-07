@@ -1,16 +1,16 @@
 {
-  "name": "@0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn",
+  "name": "@smoo.th/webauthn",
   "description": "WebAuthn library in Solidity",
   "version": "2.1.0",
-  "author": "0x90d2b2b7fb7599eebb6e7a32980857d8 https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8",
-  "repository": "github:@0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn",
-  "bugs": "https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn/issues",
-  "homepage": "https://github.com/0x90d2b2b7fb7599eebb6e7a32980857d8/webauthn#readme",
+  "author": "get-smooth https://github.com/get-smooth",
+  "repository": "github:@smoo.th/webauthn",
+  "bugs": "https://github.com/get-smooth/webauthn/issues",
+  "homepage": "https://github.com/get-smooth/webauthn#readme",
   "engines": {
     "node": ">= 18"
   },
   "devDependencies": {
-    "@0x90d2b2b7fb7599eebb6e7a32980857d8/secp256r1-computation": "^2.2.0",
+    "@smoo.th/secp256r1-computation": "^2.2.0",
     "lefthook": "^1.4.1",
     "prettier": "^2.8.7",
     "solhint-community": "^3.5.0"
