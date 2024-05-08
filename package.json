@@ -3,7 +3,10 @@
   "description": "WebAuthn library in Solidity",
   "version": "2.1.0",
   "author": "get-smooth https://github.com/get-smooth",
-  "repository": "github:@smoo.th/webauthn",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smoo.th/webauthn.git"
+  },
   "bugs": "https://github.com/get-smooth/webauthn/issues",
   "homepage": "https://github.com/get-smooth/webauthn#readme",
   "engines": {
